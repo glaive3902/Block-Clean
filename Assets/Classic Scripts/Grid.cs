@@ -15,7 +15,22 @@ public class Grid : MonoBehaviour
 
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
     private List<GameObject> _gridSquare = new List<GameObject>();
-    void Start()
+
+	private void OnEnable()
+	{
+		GameEvent.CheckIfShapeCanbePlaced += CheckIfShapeCanBePlaced;
+
+	}
+
+	private void OnDisable()
+	{
+		GameEvent.CheckIfShapeCanbePlaced -= CheckIfShapeCanBePlaced;
+
+	}
+
+
+
+	void Start()
     {
         CreateGrid();
     }
@@ -84,6 +99,18 @@ public class Grid : MonoBehaviour
             square.GetComponent<RectTransform>().anchoredPosition = new Vector2(startPosition.x + pos_x_offset, startPosition.y - pos_y_offset);
             square.GetComponent<RectTransform>().localPosition = new Vector3(startPosition.x + pos_x_offset, startPosition.y - pos_y_offset, 0.0f);
             column_number++;
+        }
+    }
+
+    private void CheckIfShapeCanBePlaced()
+    {
+        foreach (var square in _gridSquare)
+        {
+            var gridSquare = square.GetComponent<GridSquare>();
+            if(gridSquare.CanWeUseThisSquare() == true)
+            {
+                gridSquare.ActivateSquare();
+            }
         }
     }
 }

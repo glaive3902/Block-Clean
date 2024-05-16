@@ -11,22 +11,60 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public ShapeData CurrentShapeData;
     private List<GameObject> _currentShape = new List<GameObject>();
 
-    private Vector2 _shapeStartPos;
+    private Vector3 _StartPos;
     private Vector3 _shapeStartScale;
     private RectTransform _transform;
     private bool _shapeDraggable = true;
     private Canvas _canvas;
+    private bool _shapeActive = true;
 
 	public void Awake()
 	{
-        _shapeStartPos = this.GetComponent<RectTransform>().localPosition;
+        _StartPos = _transform.localPosition;
 		_shapeStartScale = this.GetComponent<RectTransform>().localScale;
         _transform = this.GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
         _shapeDraggable = true;
+        _shapeActive = true;
 	}
 
-    public void RequestNewShape(ShapeData shapeData)
+    public bool IsOnStartPos()
+    {
+        return _transform.localPosition == _StartPos;
+    }
+
+    public bool isAnyOfShapeSquareActive()
+    {
+        foreach (var square in _currentShape)
+        {
+            if(square.gameObject.activeSelf)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+	private void OnEnable()
+	{
+	}
+
+	private void OnDisable()
+	{
+
+	}
+
+    public void DeactiveShape()
+    {
+        if (_shapeActive)
+        {
+            foreach(var square in _currentShape)
+            {
+                square?.GetComponent<ShapeSquare>().DeactivateShape();
+            }
+        }
+    }
+
+	public void RequestNewShape(ShapeData shapeData)
     {
         CreateShape(shapeData);
     }
@@ -119,8 +157,9 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void OnEndDrag(PointerEventData eventData)
     {
+        _transform.localPosition = _StartPos;
         this.GetComponent<RectTransform>().localScale = _shapeStartScale;
-        this.GetComponent<RectTransform>().localPosition = _shapeStartPos;
+        GameEvent.CheckIfShapeCanbePlaced();
     }
 	public void OnPointerDown(PointerEventData eventData)
     {
