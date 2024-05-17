@@ -17,4 +17,6 @@ public class GameEvent : MonoBehaviour
     public static Action GameOver;
 
     public static bool NewGame = false;
+
+    public static bool bestScoreReached = false;
 }

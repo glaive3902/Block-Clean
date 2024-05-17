@@ -61,6 +61,7 @@ public class Grid : MonoBehaviour
         CreateGrid();
         GameEvent.RequestNewShapes();
         GameEvent.NewGame = false;
+        GameEvent.bestScoreReached = false;
 
     }
     private void SpawnGridSquare()

@@ -9,6 +9,7 @@ public class Score : MonoBehaviour
 {
     public TMP_Text scoreText;
     private int _currentScore;
+    private int _bestScore = 0;
     void Start()
     {
         _currentScore = 0;
@@ -36,6 +37,12 @@ public class Score : MonoBehaviour
     {
         _currentScore += score;
         UpdateScoreText();
+        if (_currentScore >= _bestScore)
+        {
+            GameEvent.bestScoreReached = true;
+            _bestScore = _currentScore;
+            PlayerPrefs.SetInt("bestScore", _bestScore);
+        }
     }
 
     private void UpdateScoreText()
