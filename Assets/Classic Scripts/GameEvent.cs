@@ -19,4 +19,6 @@ public class GameEvent : MonoBehaviour
     public static bool NewGame = false;
 
     public static bool bestScoreReached = false;
+
+    public static Action<Config.SquareColor> UpdateSquareColor;
 }
