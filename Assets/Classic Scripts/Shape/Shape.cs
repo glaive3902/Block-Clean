@@ -11,21 +11,23 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public ShapeData CurrentShapeData;
     private List<GameObject> _currentShape = new List<GameObject>();
 
-    private Vector3 _StartPos;
+    public int totalSquareNumber { get; set; }
+    
     private Vector3 _shapeStartScale;
     private RectTransform _transform;
     private bool _shapeDraggable = true;
     private Canvas _canvas;
     private bool _shapeActive = true;
-
+    private Vector3 _StartPos;
 	public void Awake()
 	{
-        _StartPos = _transform.localPosition;
 		_shapeStartScale = this.GetComponent<RectTransform>().localScale;
         _transform = this.GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
         _shapeDraggable = true;
         _shapeActive = true;
+        _StartPos = _transform.localPosition;
+
 	}
 
     public bool IsOnStartPos()
@@ -46,14 +48,18 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	private void OnEnable()
 	{
+        GameEvent.MoveShapeToStartPosition += MoveShapeToStartPosition;
+        GameEvent.SetShapeInactive += SetShapeInactive;
 	}
 
 	private void OnDisable()
 	{
+		GameEvent.MoveShapeToStartPosition -= MoveShapeToStartPosition;
+		GameEvent.SetShapeInactive -= SetShapeInactive;
 
 	}
 
-    public void DeactiveShape()
+	public void DeactiveShape()
     {
         if (_shapeActive)
         {
@@ -62,17 +68,40 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
                 square?.GetComponent<ShapeSquare>().DeactivateShape();
             }
         }
+        _shapeActive=false;
     }
 
+    public void SetShapeInactive()
+    {
+        if(IsOnStartPos()==false && isAnyOfShapeSquareActive())
+        {
+            foreach (var square in _currentShape)
+            {
+                square.gameObject.SetActive(false);
+            }
+        }
+    }
+    public void ActivateShape()
+    {
+        if (!_shapeActive)
+        {
+            foreach(var square in _currentShape)
+            {
+                square?.GetComponent<ShapeSquare>().ActivateShape();
+            }
+            _shapeActive=true;
+        }
+    }
 	public void RequestNewShape(ShapeData shapeData)
     {
+        _transform.localPosition = _StartPos;
         CreateShape(shapeData);
     }
 
     public void CreateShape(ShapeData shapeData)
     {
         CurrentShapeData = shapeData;
-        var totalSquareNumber = GetNumberOfSquares(shapeData);
+        totalSquareNumber = GetNumberOfSquares(shapeData);
         while (_currentShape.Count < totalSquareNumber) 
         {
             _currentShape.Add(Instantiate(squareShapeImage, transform) as GameObject);
@@ -157,12 +186,17 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void OnEndDrag(PointerEventData eventData)
     {
-        _transform.localPosition = _StartPos;
+        //_transform.localPosition = _StartPos;
         this.GetComponent<RectTransform>().localScale = _shapeStartScale;
         GameEvent.CheckIfShapeCanbePlaced();
     }
 	public void OnPointerDown(PointerEventData eventData)
     {
 
+    }
+
+    private void MoveShapeToStartPosition()
+    {
+        _transform.transform.localPosition = _StartPos;
     }
 }
