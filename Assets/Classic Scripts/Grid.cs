@@ -14,6 +14,7 @@ public class Grid : MonoBehaviour
     public float squareScale = 0.5f;
     public float everySquareOffset = 0.0f;
 
+    public SquareTextureData squareTextureData;
     private LineIndicator _lineIndicator;
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
     private List<GameObject> _gridSquares = new List<GameObject>();
@@ -33,7 +34,7 @@ public class Grid : MonoBehaviour
 	void Start()
     {
 		 _lineIndicator = GetComponent<LineIndicator>();
-        CreateGrid();
+		NewGame();
 
 	}
     public void ReplayButton()
@@ -59,6 +60,7 @@ public class Grid : MonoBehaviour
         _gridSquares.Clear();
         GameEvent.NewGame = true;
         CreateGrid();
+        //squareTextureData.RandomColor();
         GameEvent.RequestNewShapes();
         GameEvent.NewGame = false;
         GameEvent.bestScoreReached = false;
