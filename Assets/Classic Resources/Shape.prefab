@@ -43,7 +43,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2221313669152716243}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e14a8cf1515d364fbbfd0e035610560, type: 3}
   m_Name: 
@@ -51,4 +51,5 @@ MonoBehaviour:
   squareShapeImage: {fileID: 4328745794630089666, guid: 9b41387a80d86794192c3f0a20432a83, type: 3}
   shapeSelectedScale: {x: 1, y: 1, z: 1}
   offset: {x: 0, y: 700}
+  squareTextureData: {fileID: 11400000, guid: d5bd43781e7cb5c4bbc005f6c35820fd, type: 2}
   CurrentShapeData: {fileID: 11400000, guid: b02916c144b893b47b21ca4d96bb298b, type: 2}

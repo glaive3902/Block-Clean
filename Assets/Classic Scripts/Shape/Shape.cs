@@ -8,6 +8,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public Vector3 shapeSelectedScale;
     public Vector2 offset = new Vector2(0f, 500f);
 
+    public SquareTextureData squareTextureData;
     public ShapeData CurrentShapeData;
     private List<GameObject> _currentShape = new List<GameObject>();
 
@@ -27,7 +28,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         _shapeDraggable = true;
         _shapeActive = true;
         _StartPos = _transform.localPosition;
-
+        
 	}
 
     public bool IsOnStartPos()
@@ -94,18 +95,22 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void RequestNewShape(ShapeData shapeData)
     {
-        _transform.localPosition = _StartPos;
+		
+		_transform.localPosition = _StartPos;
+        squareTextureData.RandomColor();
         CreateShape(shapeData);
     }
 
     public void CreateShape(ShapeData shapeData)
     {
+        
         CurrentShapeData = shapeData;
         totalSquareNumber = GetNumberOfSquares(shapeData);
         while (_currentShape.Count < totalSquareNumber) 
         {
             _currentShape.Add(Instantiate(squareShapeImage, transform) as GameObject);
         }
+        GameEvent.UpdateSquareColor(squareTextureData.currentColor);
 
         foreach (var square in _currentShape)
         {
@@ -199,4 +204,5 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     {
         _transform.transform.localPosition = _StartPos;
     }
+
 }

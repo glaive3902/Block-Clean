@@ -13,7 +13,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         _currentScore = 0;
-        
+        _bestScore = PlayerPrefs.GetInt("bestScore");
     }
 
 	private void OnEnable()

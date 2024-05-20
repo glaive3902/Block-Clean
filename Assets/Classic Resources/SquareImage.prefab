@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5394535260721179041}
   - component: {fileID: 6771333754380277306}
   - component: {fileID: 5648976787553783289}
+  - component: {fileID: 4870668806382317358}
   - component: {fileID: 8616201905672695349}
   - component: {fileID: 5859180030611498068}
   - component: {fileID: 100347093509019914}
@@ -62,6 +63,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   occupiedImage: {fileID: 1563283579920505625}
+--- !u!114 &4870668806382317358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4328745794630089666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 840175d2e2d9a1b4ea66b899534dacd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  squareTextureData: {fileID: 11400000, guid: d5bd43781e7cb5c4bbc005f6c35820fd, type: 2}
+  updateImage: 1
 --- !u!114 &8616201905672695349
 MonoBehaviour:
   m_ObjectHideFlags: 0

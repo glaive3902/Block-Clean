@@ -13,20 +13,24 @@ public class Grid : MonoBehaviour
     public Vector2 startPosition = new Vector2 (0.0f , 0.0f);
     public float squareScale = 0.5f;
     public float everySquareOffset = 0.0f;
-
     public SquareTextureData squareTextureData;
+
     private LineIndicator _lineIndicator;
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
     private List<GameObject> _gridSquares = new List<GameObject>();
+    private Config.SquareColor _currentActiveSquareColor = Config.SquareColor.NotSet;
 
 	private void OnEnable()
 	{
 		GameEvent.CheckIfShapeCanbePlaced += CheckIfShapeCanBePlaced;
+        GameEvent.UpdateSquareColor += OnUpdateSquareColor;
 	}
 
 	private void OnDisable()
 	{
 		GameEvent.CheckIfShapeCanbePlaced -= CheckIfShapeCanBePlaced;
+		GameEvent.UpdateSquareColor -= OnUpdateSquareColor;
+
 	}
 
 
@@ -35,8 +39,13 @@ public class Grid : MonoBehaviour
     {
 		 _lineIndicator = GetComponent<LineIndicator>();
 		NewGame();
-
+        _currentActiveSquareColor = squareTextureData.activeSquareTextures[0].squareColor;
 	}
+
+    private void OnUpdateSquareColor(Config.SquareColor color)
+    {
+        _currentActiveSquareColor = color;
+    }
     public void ReplayButton()
     {
         NewGame();
@@ -151,7 +160,7 @@ public class Grid : MonoBehaviour
         {
             foreach (var squareIndex in squareIndexes)
             {
-                _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard();
+                _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard(_currentActiveSquareColor);
                 GameEvent.Addscore(singleScore);
             }
 
@@ -204,10 +213,11 @@ public class Grid : MonoBehaviour
 
         var completedLines = CheckIfSquareAreCompleted(lines);
 
-        if(completedLines > 2)
+        if(completedLines >= 2)
         {
-            //bonus
-        }
+            GameEvent.ShowEffects();
+			//bonus
+		}
 
         // + điểm
         var totalScore = 10 * completedLines; // + bonus
