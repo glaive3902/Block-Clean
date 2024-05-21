@@ -27,4 +27,6 @@ public class GameEvent : MonoBehaviour
     public static Action ShowPlusPoint;
 
     public static Action<int> AddPlus;
+
+    public static bool OnCountDown;
 }

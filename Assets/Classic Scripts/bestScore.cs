@@ -23,4 +23,9 @@ public class bestScore : MonoBehaviour
     {
         bestScoreText.text = _currentBestScore.ToString();
     }
+
+	public void ResetBestScore()
+	{
+        PlayerPrefs.DeleteKey("bestScore");
+	}
 }

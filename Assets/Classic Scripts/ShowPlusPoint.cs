@@ -31,7 +31,7 @@ public class ShowPlusPoint : MonoBehaviour
 
     private void updatePS()
     {
-        PlusPoint.text = "+ " + BonusPoint.ToString();
+        PlusPoint.text = "+" + BonusPoint.ToString();
     }
 
     //private void DisplayPS()

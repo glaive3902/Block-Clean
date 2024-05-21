@@ -8,11 +8,11 @@ using TMPro;
 public class Score : MonoBehaviour
 {
     public TMP_Text scoreText;
-    private int _currentScore;
+    public static int currentScore;
     private int _bestScore = 0;
     void Start()
     {
-        _currentScore = 0;
+        currentScore = 0;
         _bestScore = PlayerPrefs.GetInt("bestScore");
     }
 
@@ -30,29 +30,30 @@ public class Score : MonoBehaviour
 
 	void Update()
     {
-        
+        _bestScore = PlayerPrefs.GetInt("bestScore");
     }
 
     private void Addscore(int score)
     {
-        _currentScore += score;
+        currentScore += score;
+
         UpdateScoreText();
-        if (_currentScore >= _bestScore)
+        if (currentScore >= _bestScore)
         {
             GameEvent.bestScoreReached = true;
-            _bestScore = _currentScore;
+            _bestScore = currentScore;
             PlayerPrefs.SetInt("bestScore", _bestScore);
         }
     }
 
     private void UpdateScoreText()
     {
-        scoreText.text = _currentScore.ToString();
+        scoreText.text = currentScore.ToString();
     }
 
     public void SetNewGameScore()
     {
-        _currentScore = 0;
+        currentScore = 0;
         UpdateScoreText();
 	}
 }

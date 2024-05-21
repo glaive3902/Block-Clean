@@ -57,7 +57,7 @@ public class Grid : MonoBehaviour
         SetGridSquarePosition();
     }
 
-    private void NewGame()
+    public void NewGame()
     {
         foreach (GameObject square in _gridSquares) 
             {
@@ -74,6 +74,7 @@ public class Grid : MonoBehaviour
         GameEvent.RequestNewShapes();
         GameEvent.NewGame = false;
         GameEvent.bestScoreReached = false;
+        GameEvent.OnCountDown = false;
 
     }
     private void SpawnGridSquare()
@@ -163,6 +164,7 @@ public class Grid : MonoBehaviour
             {
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard(_currentActiveSquareColor);
                 GameEvent.Addscore(singleScore);
+                GameEvent.OnCountDown = false;
             }
 
             var shapeleft = 0;
@@ -272,5 +274,10 @@ public class Grid : MonoBehaviour
             }
 		}
         return linesCompleted;
+    }
+
+    public void GameOver()
+    {
+        GameEvent.GameOver();
     }
 }
