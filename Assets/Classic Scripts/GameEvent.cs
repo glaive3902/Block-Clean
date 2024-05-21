@@ -23,4 +23,8 @@ public class GameEvent : MonoBehaviour
     public static Action<Config.SquareColor> UpdateSquareColor;
 
     public static Action ShowEffects;
+
+    public static Action ShowPlusPoint;
+
+    public static Action<int> AddPlus;
 }

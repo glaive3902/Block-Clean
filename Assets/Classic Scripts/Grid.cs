@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro.EditorUtilities;
 using UnityEngine;
@@ -191,6 +192,7 @@ public class Grid : MonoBehaviour
 
     public void CheckIfAnyLineCompleted()
     {
+        int BP = 0;
         List<int[]> lines = new List<int[]>();
         //cột
         foreach(var column in _lineIndicator.columnIndexes)
@@ -216,12 +218,15 @@ public class Grid : MonoBehaviour
         if(completedLines >= 2)
         {
             GameEvent.ShowEffects();
+            BP = 20 * completedLines * 2;
+            GameEvent.AddPlus(BP);
 			//bonus
 		}
 
         // + điểm
-        var totalScore = 10 * completedLines; // + bonus
+        var totalScore = 20 * completedLines + BP; // + bonus
         GameEvent.Addscore(totalScore);
+        
 	}
 
     private int CheckIfSquareAreCompleted(List<int[]> data)
