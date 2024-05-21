@@ -178,6 +178,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 	public void OnBeginDrag(PointerEventData eventData)
     {
         this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
+        GameEvent.isPlaying = true;
     }
 	public void OnDrag(PointerEventData eventData)
     {
@@ -188,13 +189,15 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         Vector2 pos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
         _transform.localPosition = pos + offset;
+        
     }
 	public void OnEndDrag(PointerEventData eventData)
     {
         //_transform.localPosition = _StartPos;
         this.GetComponent<RectTransform>().localScale = _shapeStartScale;
         GameEvent.CheckIfShapeCanbePlaced();
-    }
+		GameEvent.isPlaying = false;
+	}
 	public void OnPointerDown(PointerEventData eventData)
     {
 

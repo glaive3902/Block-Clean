@@ -27,7 +27,11 @@ public class GridSquare : MonoBehaviour
         SquareOccupied = false;
     }
 
-    public bool CanWeUseThisSquare()
+	private void Update()
+	{
+        checkPlaying();
+	}
+	public bool CanWeUseThisSquare()
     {
         return hoverImage.gameObject.activeSelf;
     }
@@ -107,4 +111,15 @@ public class GridSquare : MonoBehaviour
 
 	}
 
+    private void checkPlaying()
+    {
+        if (GameEvent.isPlaying == true)
+        {
+			GetComponent<BoxCollider2D>().enabled = true;
+		}
+        else
+        {
+			GetComponent<BoxCollider2D>().enabled = false;
+		}
+    }
 }
