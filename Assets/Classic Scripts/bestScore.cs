@@ -20,7 +20,6 @@ public class bestScore : MonoBehaviour
         _currentBestScore = PlayerPrefs.GetInt("bestScore");
         DisplayBestScore();
         notice();
-
 	}
 
     private void DisplayBestScore()

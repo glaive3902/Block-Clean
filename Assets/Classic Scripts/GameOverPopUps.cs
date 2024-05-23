@@ -19,7 +19,7 @@ public class GameOverPopUps : MonoBehaviour
 		
     }
 
-	private void Update()
+	private void FixedUpdate()
 	{
 		UpdateBS();
 		UpdateSC();
