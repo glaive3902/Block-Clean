@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
+	public GameObject Win;
+	public GameObject Lose;
 	public GameObject EndGameButton;
     public float currentTime;
 	public float OriginalCountdown = 5;
@@ -23,6 +25,7 @@ public class Timer : MonoBehaviour
 		{
 			StartCoroutine(CountdownRoute());
 		}
+		
 	}
 
 	public void Countdown()
@@ -36,9 +39,11 @@ public class Timer : MonoBehaviour
 		else
 		{
 			currentTime = 0;
+			WinOrLose();
 			EndGameButton.SetActive(true);
 			
 		}
+		
 	}
 	IEnumerator CountdownRoute()
 	{
@@ -46,5 +51,19 @@ public class Timer : MonoBehaviour
 		currentTime = OriginalCountdown;
 		yield return new WaitForSeconds(1);
 		GameEvent.OnCountDown = true;
+	}
+
+	private void WinOrLose()
+	{
+		if(GameEvent.bestScoreReached)
+		{
+			Win.SetActive(true);
+			Lose.SetActive(false);
+		}
+		else
+		{
+			Win.SetActive(false);
+			Lose.SetActive(true);
+		}
 	}
 }
