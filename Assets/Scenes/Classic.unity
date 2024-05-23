@@ -3788,7 +3788,6 @@ RectTransform:
   - {fileID: 1655223049}
   - {fileID: 1532177054}
   - {fileID: 1337508885}
-  - {fileID: 909603279}
   m_Father: {fileID: 1523142819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4037,16 +4036,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909603278}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.548, y: 1.548, z: 1.548}
+  m_LocalScale: {x: 0.07251718, y: 0.9668957, z: 0.9668957}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 898438368}
+  m_Father: {fileID: 1523142819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.98}
+  m_AnchoredPosition: {x: 0, y: -4.147384}
   m_SizeDelta: {x: 0.78, y: 0.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &909603280
@@ -4102,7 +4101,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Classic
+          m_StringArgument: Home
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &909603281
@@ -6182,6 +6181,7 @@ RectTransform:
   - {fileID: 901456696}
   - {fileID: 850746498}
   - {fileID: 1254828242}
+  - {fileID: 909603279}
   - {fileID: 898438368}
   m_Father: {fileID: 764704013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7302,9 +7302,9 @@ RectTransform:
   - {fileID: 798871761}
   - {fileID: 648712562}
   - {fileID: 373993823}
-  - {fileID: 811174521}
   - {fileID: 148936155}
   - {fileID: 1609542267}
+  - {fileID: 811174521}
   - {fileID: 106711409}
   - {fileID: 1971163777}
   - {fileID: 1166484080}
