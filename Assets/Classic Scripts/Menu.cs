@@ -11,8 +11,15 @@ public class Menu : MonoBehaviour
 			Debug.unityLogger.logEnabled = false;
 	}
 
+	private void Start()
+	{
+		Application.targetFrameRate = -1;
+		Application.targetFrameRate = 60;
+	}
 	public void LoadScene(string name)
 	{
 		SceneManager.LoadScene(name);
 	}
+
+
 }
