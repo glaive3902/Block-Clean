@@ -250,8 +250,10 @@ GameObject:
   m_Component:
   - component: {fileID: 355073358989991900}
   - component: {fileID: 8428364906731099655}
+  - component: {fileID: 7652656433990730883}
   - component: {fileID: -4055670362043055330}
   - component: {fileID: 1588280963562780072}
+  - component: {fileID: 8524926395445094195}
   m_Layer: 5
   m_Name: GridSquare
   m_TagString: Untagged
@@ -299,6 +301,20 @@ MonoBehaviour:
   normalImages:
   - {fileID: 21300000, guid: 35dfd47538772df439d3cc82f0e100be, type: 3}
   - {fileID: 21300000, guid: 35dfd47538772df439d3cc82f0e100be, type: 3}
+  animator: {fileID: 0}
+--- !u!114 &7652656433990730883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6337287599057391173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c936f36ca9abaf4e9a374d7fc505e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeImage: {fileID: 4991562101183783498}
 --- !u!61 &-4055670362043055330
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -371,3 +387,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &8524926395445094195
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6337287599057391173}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4808d76fb07d1134ab2c4c720d446772, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

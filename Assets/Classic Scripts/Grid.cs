@@ -16,6 +16,7 @@ public class Grid : MonoBehaviour
     public float everySquareOffset = 0.0f;
     public SquareTextureData squareTextureData;
 
+    AudioManager audioManager;
     private LineIndicator _lineIndicator;
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
     private List<GameObject> _gridSquares = new List<GameObject>();
@@ -39,8 +40,10 @@ public class Grid : MonoBehaviour
 	void Start()
     {
 		 _lineIndicator = GetComponent<LineIndicator>();
-		NewGame();
+		
         _currentActiveSquareColor = squareTextureData.activeSquareTextures[0].squareColor;
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        NewGame();
 	}
 
     private void OnUpdateSquareColor(Config.SquareColor color)
@@ -70,13 +73,14 @@ public class Grid : MonoBehaviour
         _gridSquares.Clear();
         GameEvent.NewGame = true;
         CreateGrid();
+        
         //squareTextureData.RandomColor();
         GameEvent.RequestNewShapes();
         GameEvent.NewGame = false;
         GameEvent.bestScoreReached = false;
         GameEvent.OnCountDown = false;
         GameEvent.isPlaying = false;
-
+        audioManager.PlaySFX(audioManager.NewGame);
 
 	}
     private void SpawnGridSquare()
@@ -165,7 +169,9 @@ public class Grid : MonoBehaviour
             foreach (var squareIndex in squareIndexes)
             {
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard(_currentActiveSquareColor);
+                
                 GameEvent.Addscore(singleScore);
+                //audioManager.PlaySFX(audioManager.putDown);
                 GameEvent.OnCountDown = false;
             }
 
@@ -218,13 +224,22 @@ public class Grid : MonoBehaviour
         }
 
         var completedLines = CheckIfSquareAreCompleted(lines);
-
+        if (completedLines == 1)
+            audioManager.PlaySFX(audioManager.singleLine);
         if(completedLines >= 2)
         {
             GameEvent.ShowEffects();
             BP = 20 * completedLines * 2;
             GameEvent.AddPlus(BP);
-			//bonus
+            //bonus
+            if (completedLines == 2)
+                audioManager.PlaySFX(audioManager.doubleLines);
+            else if(completedLines == 3)
+                audioManager.PlaySFX(audioManager.tripleLines);
+            else
+            {
+                audioManager.PlaySFX(audioManager.MoreThanFour);
+            }
 		}
 
         // + điểm

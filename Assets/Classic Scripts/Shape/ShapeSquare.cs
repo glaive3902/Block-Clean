@@ -4,11 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ShapeSquare : MonoBehaviour
 {
-    public Image occupiedImage;
 	
 	private void Start()
 	{
-		occupiedImage.gameObject.SetActive(false);
+		//occupiedImage.gameObject.SetActive(false);
 	}
 
 	public void DeactivateShape()
@@ -23,13 +22,13 @@ public class ShapeSquare : MonoBehaviour
 		gameObject.SetActive(true);
 	}
 
-	public void SetOccupied()
-	{
-		occupiedImage.gameObject.SetActive(true);
-	}
+	//public void SetOccupied()
+	//{
+	//	occupiedImage.gameObject.SetActive(true);
+	//}
 
-	public void UnSetOccupied()
-	{
-		occupiedImage.gameObject.SetActive(false );
-	}
+	//public void UnSetOccupied()
+	//{
+	//	occupiedImage.gameObject.SetActive(false );
+	//}
 }
