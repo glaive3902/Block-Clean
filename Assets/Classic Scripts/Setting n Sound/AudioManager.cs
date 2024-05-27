@@ -33,4 +33,20 @@ public class AudioManager : MonoBehaviour
 	{
 		SFXSources.PlayOneShot(clip);
 	}
+
+	public void ButtonClick()
+	{
+		SFXSources.PlayOneShot(Click);
+	}
+
+	public void WinOrLoseClick()
+	{
+		if (GameEvent.bestScoreReached)
+			SFXSources.PlayOneShot(win);
+
+		else
+		{
+			SFXSources.PlayOneShot(lose);
+		}
+	}
 }

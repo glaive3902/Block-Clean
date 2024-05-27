@@ -9,10 +9,11 @@ public class Timer : MonoBehaviour
 	public GameObject EndGameButton;
     public float currentTime;
 	public float OriginalCountdown = 5;
+	//AudioManager audioManager;
 
 	private void Start()
 	{
-		
+		//audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 	}
 
 	private void Update()
