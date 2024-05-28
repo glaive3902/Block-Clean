@@ -106,7 +106,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         
         CurrentShapeData = shapeData;
         totalSquareNumber = GetNumberOfSquares(shapeData);
-        while (_currentShape.Count < totalSquareNumber) 
+        while (_currentShape.Count <= totalSquareNumber) 
         {
             _currentShape.Add(Instantiate(squareShapeImage, transform) as GameObject);
         }
