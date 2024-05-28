@@ -314,93 +314,79 @@ public class Grid : MonoBehaviour
 
         if(validShapes == 0)
         {
-            //gameover
-            Debug.Log("GameOver");
+            GameEvent.GameOver();
         }
         Debug.Log(validShapes);
     }
 
-    private bool CheckIfShapeCanBePlacedOnGrid(Shape currentShape)
-    {
-        var currentShapeData = currentShape.CurrentShapeData;
-        var shapeColumns = currentShapeData.columns;
-        var shapeRows = currentShapeData.rows;
+	private bool CheckIfShapeCanBePlacedOnGrid(Shape currentShape)
+	{
+		var currentShapeData = currentShape.CurrentShapeData;
+		var shapeColumns = currentShapeData.columns;
+		var shapeRows = currentShapeData.rows;
 
-        List<int> originalShapeFilledUpSquares = new List<int>();
-        var squareIndex = 0;
-        for (var rowIndex = 0; rowIndex < shapeRows;  rowIndex++)
-        {
-            for (var columnIndex = 0;  columnIndex < shapeColumns; columnIndex++)
-            {
-                if (currentShapeData.board[rowIndex].column[columnIndex])
-                {
-                    originalShapeFilledUpSquares.Add(squareIndex);
-                }
-                squareIndex++;
-            }
-        }
+		List<int> originalShapeFilledUpSquares = new List<int>();
+		var squareIndex = 0;
+		for (var rowIndex = 0; rowIndex < shapeRows; rowIndex++)
+		{
+			for (var columnIndex = 0; columnIndex < shapeColumns; columnIndex++)
+			{
+				if (currentShapeData.board[rowIndex].column[columnIndex])
+				{
+					originalShapeFilledUpSquares.Add(squareIndex);
+				}
+				squareIndex++;
+			}
+		}
 
-        if (currentShape.totalSquareNumber != originalShapeFilledUpSquares.Count)
-            Debug.Log("Co van de voi bo dem");
+		if (currentShape.totalSquareNumber != originalShapeFilledUpSquares.Count)
+			Debug.Log("Co van de voi bo dem");
 
-        var squareList = GetAllSquareCombination(shapeColumns, shapeRows);
+		var squareList = GetAllSquareCombination(shapeColumns, shapeRows);
 
-        bool canBePlaced = false;
+		foreach (var number in squareList)
+		{
+			bool shapeCanBePlacedOnTheBoard = true;
+			foreach (var squareIndexToCheck in originalShapeFilledUpSquares)
+			{
+				var comp = _gridSquares[number[squareIndexToCheck]].GetComponent<GridSquare>();
+				if (comp.SquareOccupied)
+				{
+					shapeCanBePlacedOnTheBoard = false;
+					break; // Break early if any square is occupied
+				}
+			}
 
-        foreach(var number in squareList)
-        {
-            bool shapeCanBePlacedOnTheBoard = true;
-            foreach(var squareIndexToCheck in originalShapeFilledUpSquares)
-            {
-                var comp = _gridSquares[number[squareIndexToCheck]].GetComponent<GridSquare>();
-                if (comp.SquareOccupied)
-                {
-                    shapeCanBePlacedOnTheBoard = false;
-                }
-            }
+			if (shapeCanBePlacedOnTheBoard)
+			{
+				return true; // Can place the shape
+			}
+		}
 
-            if (shapeCanBePlacedOnTheBoard)
-            {
-                canBePlaced = true;
-            }
-        }
-        return canBePlaced;
-    }
+		return false; // Cannot place the shape anywhere
+	}
 
-    private List<int[]> GetAllSquareCombination(int columns, int rows)
-    {
-        var squareList = new List<int[]>();
-        var lastColumnIndex = 0;
-        var lastRowIndex = 0;
-        int safeIndex = 0;
+	private List<int[]> GetAllSquareCombination(int columns, int rows)
+	{
+		var squareList = new List<int[]>();
+		int gridSize = 8; // Assuming a fixed grid size of 8x8
 
-        while(lastRowIndex + (rows - 1) < 8)
-        {
-            var rowData = new List<int>();
-            for (var row = lastRowIndex; row < lastRowIndex + rows; row++)
-            {
-                for (var column = lastColumnIndex; column < lastColumnIndex + columns;  column++)
-                {
-                    rowData.Add(_lineIndicator.line_data[row,column]);
-                }
-            }
-            squareList.Add(rowData.ToArray());
+		for (int startRow = 0; startRow <= gridSize - rows; startRow++)
+		{
+			for (int startCol = 0; startCol <= gridSize - columns; startCol++)
+			{
+				var combination = new List<int>();
+				for (int row = startRow; row < startRow + rows; row++)
+				{
+					for (int col = startCol; col < startCol + columns; col++)
+					{
+						combination.Add(_lineIndicator.line_data[row, col]);
+					}
+				}
+				squareList.Add(combination.ToArray());
+			}
+		}
 
-            lastColumnIndex++;
-
-            if(lastColumnIndex + (columns -1) >= 8)
-            {
-                lastRowIndex++;
-                lastColumnIndex = 0;
-            }
-
-            safeIndex++;
-            if(safeIndex > 100)
-            {
-                break;
-            }
-        }
-
-        return squareList;
-    }
+		return squareList;
+	}
 }

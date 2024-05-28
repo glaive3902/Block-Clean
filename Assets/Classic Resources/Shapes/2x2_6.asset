@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 704e214c6eeaca042afd731b99c71f5c, type: 3}
   m_Name: 2x2_6
   m_EditorClassIdentifier: 
-  columns: 5
-  rows: 5
+  columns: 2
+  rows: 2
   board:
-  - column: 0000000000
-  - column: 0001000000
-  - column: 0000010000
-  - column: 0000000000
-  - column: 0000000000
+  - column: 0100
+  - column: 0001

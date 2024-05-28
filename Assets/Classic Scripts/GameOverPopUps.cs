@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 public class GameOverPopUps : MonoBehaviour
 {
+	public Image NoMoreSpace;
 	public GameObject Win;
 	public GameObject Lose;
 
@@ -36,17 +37,7 @@ public class GameOverPopUps : MonoBehaviour
 
 	public void OnGameOver()
 	{
-		if (GameEvent.bestScoreReached)
-		{
-			Win.gameObject.SetActive(true);
-			Lose.gameObject.SetActive(false);
-		}
-		else if(!GameEvent.bestScoreReached)
-		{
-			Win.gameObject.SetActive(false);
-			Lose.gameObject.SetActive(true);
-		}
-
+		StartCoroutine(EndGame());
 	}
 
 	public void UpdateBS()
@@ -59,5 +50,27 @@ public class GameOverPopUps : MonoBehaviour
 	{
 		_finalScore = Score.currentScore;
 		FinalScore.text = _finalScore.ToString();
+	}
+
+	public void WinOrLose()
+	{
+		if (GameEvent.bestScoreReached)
+		{
+			Win.SetActive(true);
+			Lose.SetActive(false);
+		}
+		else
+		{
+			Win.SetActive(false);
+			Lose.SetActive(true);
+		}
+	}
+
+	private IEnumerator EndGame()
+	{
+		NoMoreSpace.gameObject.SetActive(true);
+		yield return new WaitForSeconds(1);
+		NoMoreSpace.gameObject.SetActive(false);
+		WinOrLose();
 	}
 }
