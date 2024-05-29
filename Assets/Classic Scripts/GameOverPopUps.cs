@@ -11,7 +11,7 @@ public class GameOverPopUps : MonoBehaviour
 	public GameObject Lose;
 
 	AudioManager audioManager;
-	public TMP_Text bestScore;
+	public List<TMP_Text> bestScore;
 	public TMP_Text FinalScore;
 
 	private int _finalScore;
@@ -43,8 +43,10 @@ public class GameOverPopUps : MonoBehaviour
 
 	public void UpdateBS()
 	{
-		_bestscore = PlayerPrefs.GetInt("bestScore");
-		bestScore.text = _bestscore.ToString();
+		foreach (var text in bestScore)
+		{_bestscore = PlayerPrefs.GetInt("bestScore");
+			text.text = _bestscore.ToString();
+		}
 	}
 
 	public void UpdateSC()
@@ -71,6 +73,7 @@ public class GameOverPopUps : MonoBehaviour
 
 	private IEnumerator EndGame()
 	{
+		yield return new WaitForSeconds(1);
 		NoMoreSpace.gameObject.SetActive(true);
 		yield return new WaitForSeconds(4);
 		WinOrLose();
