@@ -10,6 +10,7 @@ public class GameOverPopUps : MonoBehaviour
 	public GameObject Win;
 	public GameObject Lose;
 
+	AudioManager audioManager;
 	public TMP_Text bestScore;
 	public TMP_Text FinalScore;
 
@@ -17,8 +18,8 @@ public class GameOverPopUps : MonoBehaviour
 	private int _bestscore;
     void Start()
     {
-		
-    }
+		audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+	}
 
 	private void FixedUpdate()
 	{
@@ -57,11 +58,13 @@ public class GameOverPopUps : MonoBehaviour
 		if (GameEvent.bestScoreReached)
 		{
 			Win.SetActive(true);
+			audioManager.PlaySFX(audioManager.win);
 			Lose.SetActive(false);
 		}
 		else
 		{
 			Win.SetActive(false);
+			audioManager.PlaySFX(audioManager.lose);
 			Lose.SetActive(true);
 		}
 	}
@@ -69,8 +72,8 @@ public class GameOverPopUps : MonoBehaviour
 	private IEnumerator EndGame()
 	{
 		NoMoreSpace.gameObject.SetActive(true);
-		yield return new WaitForSeconds(1);
-		NoMoreSpace.gameObject.SetActive(false);
+		yield return new WaitForSeconds(4);
 		WinOrLose();
+		NoMoreSpace.gameObject.SetActive(false);
 	}
 }
