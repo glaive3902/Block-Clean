@@ -51,5 +51,6 @@ MonoBehaviour:
   squareShapeImage: {fileID: 4328745794630089666, guid: 9b41387a80d86794192c3f0a20432a83, type: 3}
   shapeSelectedScale: {x: 1, y: 1, z: 1}
   offset: {x: 0, y: 700}
+  shapeEffect: {fileID: 0}
   squareTextureData: {fileID: 11400000, guid: d5bd43781e7cb5c4bbc005f6c35820fd, type: 2}
   CurrentShapeData: {fileID: 11400000, guid: b02916c144b893b47b21ca4d96bb298b, type: 2}

@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
     public GameObject squareShapeImage;
     public Vector3 shapeSelectedScale;
     public Vector2 offset = new Vector2(0f, 500f);
-
     public SquareTextureData squareTextureData;
     public ShapeData CurrentShapeData;
-    private List<GameObject> _currentShape = new List<GameObject>();
+    public float ScaleSpeed = 1f;
+
+	private List<GameObject> _currentShape = new List<GameObject>();
 
     public int totalSquareNumber { get; set; }
+    
     
     private Vector3 _shapeStartScale;
     private RectTransform _transform;
@@ -95,7 +100,6 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void RequestNewShape(ShapeData shapeData)
     {
-		
 		_transform.localPosition = _StartPos;
         squareTextureData.RandomColor();
         CreateShape(shapeData);
@@ -139,106 +143,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
             }
         }
     }	
-    /*
-    private float GetYPositionForShapeSquare(ShapeData shapeData, int row, Vector2 moveDistance)
-	{
-		float shiftOnY = 0f;
-		if (shapeData.rows > 1)
-		{
-			if (shapeData.rows % 2 != 0)
-			{
-				var middleSquareIndex = (shapeData.rows - 1) / 2;
-				var multiplier = (shapeData.rows - 1) / 2;
-				if (row < middleSquareIndex)
-				{
-					shiftOnY = moveDistance.y * 1;
-					shiftOnY *= multiplier;
-				}
-				else if (row > middleSquareIndex)
-				{
-					shiftOnY = moveDistance.y * - 1;
-					shiftOnY *= multiplier;
-				}
-			}
-			else
-			{
-				var middleSquareIndex2 = (shapeData.rows == 2) ? 1 : (shapeData.rows / 2);
-				var middleSquareIndex1 = (shapeData.rows == 2) ? 0 : shapeData.rows - 2;
-				var multiplier = shapeData.rows / 2;
-
-				if (row == middleSquareIndex1 || row == middleSquareIndex2)
-				{
-					if (row == middleSquareIndex2)
-						shiftOnY = (moveDistance.y / 2) * -1;
-					if (row == middleSquareIndex1)
-						shiftOnY = (moveDistance.y / 2);
-				}
-
-				if (row < middleSquareIndex1 && row < middleSquareIndex2)
-				{
-					shiftOnY = moveDistance.y * 1;
-					shiftOnY *= multiplier;
-				}
-				else if (row > middleSquareIndex1 && row > middleSquareIndex2)
-				{
-					shiftOnY = moveDistance.y * - 1;
-					shiftOnY *= multiplier;
-				}
-			}
-		}
-		return shiftOnY;
-	}
     
-    private float GetXPositionForShapeSquare(ShapeData shapeData, int column, Vector2 moveDistance)
-    {
-		float shiftOnX = 0f;
-		if(shapeData.columns > 1)
-        {
-            if(shapeData.columns % 2 != 0)
-            {
-                var middleSquareIndex = (shapeData.columns - 1) / 2;
-                var multiplier = (shapeData.columns - 1) / 2;
-                if(column < middleSquareIndex)
-                {
-                    shiftOnX = moveDistance.x * -1;
-                    shiftOnX *= multiplier;
-                }
-                else if (column > middleSquareIndex)
-                {
-                    shiftOnX = moveDistance.x * 1;
-                    shiftOnX *= multiplier;
-                }
-            }
-            else
-            {
-                var middleSquareIndex2 = (shapeData.columns == 2) ? 1 : (shapeData.columns / 2);
-                var middleSquareIndex1 = (shapeData.columns == 2) ? 0 : (shapeData.columns -1);
-                var multiplier = shapeData.columns / 2;
-
-                if(column == middleSquareIndex1 || column == middleSquareIndex2)
-                {
-                    if (column == middleSquareIndex2)
-                        shiftOnX = moveDistance.x / 2;
-                    if (column == middleSquareIndex1)
-                        shiftOnX = (moveDistance.x / 2) * -1;
-                }
-
-                if(column < middleSquareIndex1 && column < middleSquareIndex2)
-                {
-                    shiftOnX = moveDistance.x * -1;
-                    shiftOnX *= multiplier;
-                }
-                else if(column > middleSquareIndex1 && column > middleSquareIndex2)
-                {
-                    shiftOnX = moveDistance.x * 1;
-                    shiftOnX *= multiplier;
-                }
-            }
-        }
-        return shiftOnX;
-	}
-    */
-	//*
 	public float GetYPositionForShapeSquare(ShapeData shapeData, int row, Vector2 moveDistance)
 	{
 		float squareShiftY = 0;
@@ -253,7 +158,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 		squareShiftX = moveDistance.x * (middleElement - column) * -1;
 		return squareShiftX;
 	}
-	//*/
+	
 	private int GetNumberOfSquares(ShapeData shapeData)
     {
         int number = 0;
@@ -270,8 +175,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
 	public void OnPointerClick(PointerEventData eventData)
     {
-
-    }
+		
+	}
 	public void OnPointerUp(PointerEventData eventData)
     {
 
@@ -283,13 +188,13 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void OnDrag(PointerEventData eventData)
     {
-        _transform.anchorMin = new Vector2(0, 0);
-        _transform.anchorMax = new Vector2(0, 0);
-        _transform.pivot = new Vector2(0, 0);
+		_transform.anchorMin = new Vector2(0, 0);
+		_transform.anchorMax = new Vector2(0, 0);
+		_transform.pivot = new Vector2(0, 0);
 
-        Vector2 pos;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
-        _transform.localPosition = pos + offset;
+		Vector2 pos;
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
+		_transform.localPosition = pos + offset;
         
     }
 	public void OnEndDrag(PointerEventData eventData)
@@ -301,8 +206,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 	}
 	public void OnPointerDown(PointerEventData eventData)
     {
-
-    }
+		
+	}
 
     private void MoveShapeToStartPosition()
     {

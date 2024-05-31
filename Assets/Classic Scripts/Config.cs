@@ -15,5 +15,6 @@ public class Config : MonoBehaviour
         red,
         violet,
         yellow,
+        GameOver,
     }
 }

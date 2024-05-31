@@ -34,12 +34,17 @@ public class SquareTextureData : ScriptableObject
 
     public void RandomColor()
     {
-        currentColor = activeSquareTextures[UnityEngine.Random.Range(0,8)].squareColor;
+        currentColor = activeSquareTextures[UnityEngine.Random.Range(0,7)].squareColor;
     }
 
+	public void GameOverColor()
+    {
+		currentColor = activeSquareTextures[8].squareColor;
+	}
 	private void Awake()
 	{
 		RandomColor();
+        
 	}
 
 	private void OnEnable()

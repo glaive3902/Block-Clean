@@ -40,7 +40,6 @@ public class Grid : MonoBehaviour
 	void Start()
     {
 		 _lineIndicator = GetComponent<LineIndicator>();
-		
         _currentActiveSquareColor = squareTextureData.activeSquareTextures[0].squareColor;
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         NewGame();
@@ -82,6 +81,19 @@ public class Grid : MonoBehaviour
         GameEvent.isPlaying = false;
         audioManager.PlaySFX(audioManager.NewGame);
 
+	}
+
+    public void GameOverBoard()
+    {
+        squareTextureData.GameOverColor();
+		foreach (GameObject square in _gridSquares)
+		{
+			if (square.GetComponent<GridSquare>().Selected == false)
+			{
+                square.GetComponent<GridSquare>().ActivateSquare();
+			}
+
+		}
 	}
     private void SpawnGridSquare()
     {
@@ -234,9 +246,13 @@ public class Grid : MonoBehaviour
             //bonus
             if (completedLines == 2)
                 audioManager.PlaySFX(audioManager.doubleLines);
-            else if(completedLines == 3)
+            else if (completedLines == 3)
+                { 
                 audioManager.PlaySFX(audioManager.tripleLines);
-            else
+                
+                }
+
+			else
             {
                 audioManager.PlaySFX(audioManager.MoreThanFour);
             }
@@ -294,11 +310,6 @@ public class Grid : MonoBehaviour
         return linesCompleted;
     }
 
-    public void GameOver()
-    {
-        GameEvent.GameOver();
-    }
-
     public void CheckIfPlayerLost()
     {
         var validShapes = 0;
@@ -315,6 +326,8 @@ public class Grid : MonoBehaviour
         if(validShapes == 0)
         {
             GameEvent.GameOver();
+            StartCoroutine(GameOver());
+            
         }
         Debug.Log(validShapes);
     }
@@ -389,4 +402,11 @@ public class Grid : MonoBehaviour
 
 		return squareList;
 	}
+
+    private IEnumerator GameOver()
+    {
+        yield return new WaitForSeconds(2);
+        GameOverBoard();
+    }
+    
 }
