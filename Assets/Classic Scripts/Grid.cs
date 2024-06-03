@@ -211,6 +211,7 @@ public class Grid : MonoBehaviour
         else
         {
             GameEvent.MoveShapeToStartPosition();
+            //GameEvent.isPlaying = false;
         }
     }
 

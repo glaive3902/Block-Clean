@@ -13,12 +13,14 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public SquareTextureData squareTextureData;
     public ShapeData CurrentShapeData;
     public float transformSpeed = 1f;
-
+    public float smoothTime = 0.1f;
 	private List<GameObject> _currentShape = new List<GameObject>();
 
     public int totalSquareNumber { get; set; }
-    
-    
+
+    private static Shape _selectedShape;
+    private Vector3 velocity = Vector3.zero;
+    private Vector3 _TargetPosition;
     private Vector3 _shapeStartScale;
     private RectTransform _transform;
     private bool _shapeDraggable = true;
@@ -179,8 +181,12 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 	}
     public void OnPointerDown(PointerEventData eventData)
     {
+        _selectedShape = this;
+		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
+		Vector2 pos;
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
+		_TargetPosition = pos + offset;
         GameEvent.isPlaying = true;
-        onDrag(eventData);
 	}
 	public void OnPointerUp(PointerEventData eventData)
     {
@@ -195,9 +201,17 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void OnDrag(PointerEventData eventData)
     {
-		
-		GameEvent.isPlaying = true;
-        onDrag(eventData);
+
+        _selectedShape = this;
+		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
+		_transform.anchorMin = new Vector3(0, 0, 0);
+		_transform.anchorMax = new Vector3(0, 0, 0);
+		_transform.pivot = new Vector3(0, 0,0);
+
+		Vector2 pos;
+		RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
+		_TargetPosition = pos + offset;
+        GameEvent.isPlaying = true;
 	}
 	public void OnEndDrag(PointerEventData eventData)
     {
@@ -212,19 +226,15 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     private void MoveShapeToStartPosition()
     {
         _transform.transform.localPosition = _StartPos;
-    }
+	}
 
-    private void onDrag(PointerEventData eventData)
-    {
-			this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
-			_transform.anchorMin = new Vector2(0, 0);
-		    _transform.anchorMax = new Vector2(0, 0);
-		    _transform.pivot = new Vector2(0, 0);
+	private void Update()
+	{
+        if (GameEvent.isPlaying && _selectedShape == this) 
+        {
+            _transform.localPosition = Vector3.SmoothDamp(_transform.localPosition, _TargetPosition, ref velocity, smoothTime);
+        }
 
-		    Vector2 pos;
-		    RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
-		    _transform.localPosition = pos + offset;
-        
-    }
+	}
 
 }
