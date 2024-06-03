@@ -8,6 +8,7 @@ public class GridSquare : MonoBehaviour
     public Image normalImage;
     public Image activeImage;
     public Image hoverImage;
+    public Image EffectImage;
     public List<Sprite> normalImages;
     public Animator animator;
     AudioManager audioManager;
@@ -49,6 +50,7 @@ public class GridSquare : MonoBehaviour
     {
         hoverImage.gameObject.SetActive(false);
         activeImage.gameObject.SetActive(true);
+        EffectImage.gameObject.SetActive(true);
         Selected = true;
         SquareOccupied = true;
     }

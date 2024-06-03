@@ -35,7 +35,7 @@ public class ShapeStorage : MonoBehaviour
             if (shape.IsOnStartPos() == false && shape.isAnyOfShapeSquareActive())
                 return shape;
         }
-        Debug.LogError("There is no shape Selected");
+        //Debug.LogError("There is no shape Selected");
         return null;
     }
     

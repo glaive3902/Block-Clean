@@ -73,7 +73,6 @@ public class GameOverPopUps : MonoBehaviour
 
 	private IEnumerator EndGame()
 	{
-		yield return new WaitForSeconds(1);
 		NoMoreSpace.gameObject.SetActive(true);
 		yield return new WaitForSeconds(4);
 		WinOrLose();

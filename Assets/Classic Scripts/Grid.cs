@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+    
     public ShapeStorage shapeStorage;
     public int columns = 0;
     public int rows = 0;
@@ -86,6 +87,7 @@ public class Grid : MonoBehaviour
     public void GameOverBoard()
     {
         squareTextureData.GameOverColor();
+        
 		foreach (GameObject square in _gridSquares)
 		{
 			if (square.GetComponent<GridSquare>().Selected == false)
@@ -183,7 +185,7 @@ public class Grid : MonoBehaviour
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard(_currentActiveSquareColor);
                 
                 GameEvent.Addscore(singleScore);
-                //audioManager.PlaySFX(audioManager.putDown);
+               
                 GameEvent.OnCountDown = false;
             }
 
@@ -405,7 +407,7 @@ public class Grid : MonoBehaviour
 
     private IEnumerator GameOver()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         GameOverBoard();
     }
     
