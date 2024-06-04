@@ -210,9 +210,9 @@ public class Grid : MonoBehaviour
         }
         else
         {
-            GameEvent.MoveShapeToStartPosition();
-            //GameEvent.isPlaying = false;
-        }
+			GameEvent.isPlaying = false;
+			//GameEvent.isPlaying = false;
+		}
     }
 
     public void CheckIfAnyLineCompleted()

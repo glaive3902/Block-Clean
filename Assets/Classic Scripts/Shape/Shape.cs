@@ -102,8 +102,9 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void RequestNewShape(ShapeData shapeData)
     {
-		_transform.localPosition = _StartPos;
-        squareTextureData.RandomColor();
+        GameEvent.isPlaying = false;
+		_transform.transform.localPosition = _StartPos;
+		squareTextureData.RandomColor();
         CreateShape(shapeData);
     }
 
@@ -182,6 +183,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public void OnPointerDown(PointerEventData eventData)
     {
         _selectedShape = this;
+        disableShadow();
 		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
 		Vector2 pos;
 		RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
@@ -193,7 +195,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 		//MoveShapeToStartPosition();
 		this.GetComponent<RectTransform>().localScale = _shapeStartScale;
 		GameEvent.CheckIfShapeCanbePlaced();
-		GameEvent.isPlaying = false;
+		//GameEvent.isPlaying = false;
 	}
 	public void OnBeginDrag(PointerEventData eventData)
     {
@@ -203,6 +205,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     {
 
         _selectedShape = this;
+        disableShadow();
 		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
 		_transform.anchorMin = new Vector3(0, 0, 0);
 		_transform.anchorMax = new Vector3(0, 0, 0);
@@ -217,22 +220,40 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     {
         //MoveShapeToStartPosition();
 		this.GetComponent<RectTransform>().localScale = _shapeStartScale;
-        GameEvent.CheckIfShapeCanbePlaced();
-        GameEvent.isPlaying = false;
+		GameEvent.CheckIfShapeCanbePlaced();
+        //GameEvent.isPlaying = false;
 		
 	}
 	
 
     private void MoveShapeToStartPosition()
     {
-        _transform.transform.localPosition = _StartPos;
+        _transform.transform.localPosition = Vector3.SmoothDamp(_transform.localPosition, _StartPos, ref velocity, smoothTime);
+        //_transform.localPosition = _StartPos;
 	}
+
+    private void disableShadow()
+    {
+        foreach (var square in _currentShape)
+        {
+            square.GetComponent<Shadow>().enabled = false;
+        }
+    }
 
 	private void Update()
 	{
         if (GameEvent.isPlaying && _selectedShape == this) 
         {
             _transform.localPosition = Vector3.SmoothDamp(_transform.localPosition, _TargetPosition, ref velocity, smoothTime);
+        }
+        else if (!GameEvent.isPlaying) 
+        { 
+        
+            MoveShapeToStartPosition();
+			foreach (var square in _currentShape)
+			{
+				square.GetComponent<Shadow>().enabled = true;
+			}
         }
 
 	}
