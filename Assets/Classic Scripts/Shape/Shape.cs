@@ -183,6 +183,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     public void OnPointerDown(PointerEventData eventData)
     {
         _selectedShape = this;
+        
         disableShadow();
 		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
 		Vector2 pos;
@@ -203,7 +204,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void OnDrag(PointerEventData eventData)
     {
-
+        
         _selectedShape = this;
         disableShadow();
 		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
@@ -219,8 +220,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 	public void OnEndDrag(PointerEventData eventData)
     {
         //MoveShapeToStartPosition();
-		this.GetComponent<RectTransform>().localScale = _shapeStartScale;
-		GameEvent.CheckIfShapeCanbePlaced();
+		//this.GetComponent<RectTransform>().localScale = _shapeStartScale;
+		//GameEvent.CheckIfShapeCanbePlaced();
         //GameEvent.isPlaying = false;
 		
 	}
@@ -228,8 +229,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     private void MoveShapeToStartPosition()
     {
-        _transform.transform.localPosition = Vector3.SmoothDamp(_transform.localPosition, _StartPos, ref velocity, smoothTime);
-        //_transform.localPosition = _StartPos;
+        _transform.transform.localPosition = _StartPos;
+        GameEvent.isPlaying = false;
 	}
 
     private void disableShadow()
@@ -246,14 +247,15 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
         {
             _transform.localPosition = Vector3.SmoothDamp(_transform.localPosition, _TargetPosition, ref velocity, smoothTime);
         }
-        else if (!GameEvent.isPlaying) 
-        { 
-        
-            MoveShapeToStartPosition();
+        else
+        {
+
+			//_transform.localPosition = Vector3.SmoothDamp(_transform.localPosition, _StartPos, ref velocity, smoothTime);
 			foreach (var square in _currentShape)
 			{
 				square.GetComponent<Shadow>().enabled = true;
 			}
+
         }
 
 	}

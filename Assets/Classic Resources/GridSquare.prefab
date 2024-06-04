@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 7652656433990730883}
   - component: {fileID: -4055670362043055330}
   - component: {fileID: 1588280963562780072}
-  - component: {fileID: 8524926395445094195}
+  - component: {fileID: 5538138730034314706}
   m_Layer: 5
   m_Name: GridSquare
   m_TagString: Untagged
@@ -299,11 +299,11 @@ MonoBehaviour:
   normalImage: {fileID: 148972098103699043}
   activeImage: {fileID: 4991562101183783498}
   hoverImage: {fileID: 2745781456976965742}
-  EffectImage: {fileID: 7775112877325099162}
+  PlaceEffectImage: {fileID: 7775112877325099162}
   normalImages:
   - {fileID: 21300000, guid: 35dfd47538772df439d3cc82f0e100be, type: 3}
   - {fileID: 21300000, guid: 35dfd47538772df439d3cc82f0e100be, type: 3}
-  animator: {fileID: 0}
+  animator: {fileID: 5538138730034314706}
 --- !u!114 &7652656433990730883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c936f36ca9abaf4e9a374d7fc505e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeImage: {fileID: 4991562101183783498}
+  ActiveImage: {fileID: 0}
 --- !u!61 &-4055670362043055330
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -389,7 +389,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!95 &8524926395445094195
+--- !u!95 &5538138730034314706
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -397,9 +397,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6337287599057391173}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4808d76fb07d1134ab2c4c720d446772, type: 2}
+  m_Controller: {fileID: 9100000, guid: 649fb2d4da26e2d47a8c978be00ede11, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -425,7 +425,7 @@ GameObject:
   - component: {fileID: 957127857567517148}
   - component: {fileID: 7951809068712949545}
   m_Layer: 5
-  m_Name: EffectImage
+  m_Name: PlaceEffectImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

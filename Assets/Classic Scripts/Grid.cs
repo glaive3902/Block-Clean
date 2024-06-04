@@ -17,6 +17,8 @@ public class Grid : MonoBehaviour
     public float everySquareOffset = 0.0f;
     public SquareTextureData squareTextureData;
 
+    private int _comboLimit = 3;
+    private int comboCountLeft;
     AudioManager audioManager;
     private LineIndicator _lineIndicator;
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
@@ -160,6 +162,11 @@ public class Grid : MonoBehaviour
         }
     }
 
+    private void ResetComboCount()
+    {
+        comboCountLeft = _comboLimit;
+    }
+
     private void CheckIfShapeCanBePlaced()
     {
         var squareIndexes = new List<int>();
@@ -184,11 +191,11 @@ public class Grid : MonoBehaviour
             {
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard(_currentActiveSquareColor);
                 
+                
                 GameEvent.Addscore(singleScore);
-               
-                GameEvent.OnCountDown = false;
             }
-
+            
+            
             var shapeleft = 0;
             foreach (var shape in shapeStorage.shapeList)
             {
@@ -210,8 +217,10 @@ public class Grid : MonoBehaviour
         }
         else
         {
-			GameEvent.isPlaying = false;
-			//GameEvent.isPlaying = false;
+            //GameEvent.isPlaying = false;
+            audioManager.PlaySFX(audioManager.invalid);
+            GameEvent.MoveShapeToStartPosition();
+
 		}
     }
 
@@ -288,6 +297,7 @@ public class Grid : MonoBehaviour
 
             if (lineCompleted)
             {
+                
                 completedLines.Add(line);
             }
         }
@@ -307,6 +317,7 @@ public class Grid : MonoBehaviour
 			}
             if (completed)
             {
+                ResetComboCount();
                 linesCompleted++;
             }
 		}
@@ -323,7 +334,8 @@ public class Grid : MonoBehaviour
             {
                 shapeStorage.shapeList[index]?.ActivateShape();
                 validShapes++;
-            }
+				
+			}
         }
 
         if(validShapes == 0)

@@ -8,7 +8,7 @@ public class GridSquare : MonoBehaviour
     public Image normalImage;
     public Image activeImage;
     public Image hoverImage;
-    public Image EffectImage;
+    public Image PlaceEffectImage;
     public List<Sprite> normalImages;
     public Animator animator;
     AudioManager audioManager;
@@ -50,18 +50,18 @@ public class GridSquare : MonoBehaviour
     {
         hoverImage.gameObject.SetActive(false);
         activeImage.gameObject.SetActive(true);
-        EffectImage.gameObject.SetActive(true);
+		PlaceEffectImage.gameObject.SetActive(true);
         Selected = true;
         SquareOccupied = true;
     }
 
     public void Deactivate()
-    {
-        
+    { 
         _currentSquareColor = Config.SquareColor.NotSet;
-        GetComponent<Animator>().enabled = true;
-        
-    }
+        animator.enabled = true;
+		
+
+	}
 
     public void ClearOccupied()
     {
@@ -130,4 +130,14 @@ public class GridSquare : MonoBehaviour
 			GetComponent<BoxCollider2D>().enabled = false;
 		}
     }
+	public void Disable()
+	{
+		activeImage.gameObject.SetActive(false);
+	}
+
+	public void DisableAnim()
+	{
+		GetComponent<Animator>().enabled = false;
+	}
 }
+

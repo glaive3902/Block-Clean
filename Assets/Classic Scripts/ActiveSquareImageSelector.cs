@@ -9,6 +9,7 @@ public class ActiveSquareImageSelector : MonoBehaviour
 
 	private void OnEnable()
 	{
+
 		UpdateSquareColorDesk();
 		if (updateImage)
 			GameEvent.UpdateSquareColor += UpdateSquareColor;
@@ -30,6 +31,7 @@ public class ActiveSquareImageSelector : MonoBehaviour
 			}
 		}
 	}
+
 
 	private void UpdateSquareColor(Config.SquareColor color)
 	{
