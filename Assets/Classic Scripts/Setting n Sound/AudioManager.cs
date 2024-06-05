@@ -11,9 +11,21 @@ public class AudioManager : MonoBehaviour
 	[Header("Audio clips")]
     public AudioClip backGround;
 	public AudioClip NewGame;
-	public AudioClip singleLine;
-	public AudioClip doubleLines;
-	public AudioClip MoreThanFour;
+	public AudioClip combo1;
+	public AudioClip combo2;
+	public AudioClip combo3;
+	public AudioClip combo4;
+	public AudioClip combo5;
+	public AudioClip combo6;
+	public AudioClip combo7;
+	public AudioClip combo8;
+	public AudioClip combo9;
+	public AudioClip combo10;
+	public AudioClip combo11;
+	public AudioClip combo12;
+	public AudioClip combo13;
+	public AudioClip combo14;
+	public AudioClip combo15;
 	public AudioClip invalid;
 	public AudioClip Click;
 	public AudioClip lose;
