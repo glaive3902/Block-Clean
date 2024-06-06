@@ -31,4 +31,6 @@ public class GameEvent : MonoBehaviour
     public static bool OnCountDown;
 
     public static bool isPlaying;
+
+    public static bool Combo = false;
 }

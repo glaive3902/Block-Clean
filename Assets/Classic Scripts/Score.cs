@@ -8,12 +8,14 @@ using TMPro;
 public class Score : MonoBehaviour
 {
     public TMP_Text scoreText;
+    public Image ComboEffect;
     public static int currentScore;
     private int _bestScore = 0;
     void Start()
     {
         currentScore = 0;
         _bestScore = PlayerPrefs.GetInt("bestScore");
+        
     }
 
 	private void OnEnable()
@@ -31,9 +33,13 @@ public class Score : MonoBehaviour
 	void Update()
     {
         _bestScore = PlayerPrefs.GetInt("bestScore");
+        if (GameEvent.Combo)
+        {
+            ComboEffect.gameObject.SetActive(true);
+        }
+        
     }
-
-    private void Addscore(int score)
+	private void Addscore(int score)
     {
         currentScore += score;
 
@@ -55,5 +61,6 @@ public class Score : MonoBehaviour
     {
         currentScore = 0;
         UpdateScoreText();
+		ComboEffect.gameObject.SetActive(false);
 	}
 }

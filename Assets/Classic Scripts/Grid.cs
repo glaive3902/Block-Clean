@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using Unity.Burst.Intrinsics;
 
 public class Grid : MonoBehaviour
 {
@@ -17,9 +18,13 @@ public class Grid : MonoBehaviour
     public float squareScale = 0.5f;
     public float everySquareOffset = 0.0f;
     public SquareTextureData squareTextureData;
+    public GameObject Combo;
     public TMP_Text comboEffect;
+    public TMP_Text comboPointTxt;
+    public int currentScorePoint;
 
-    private bool combo;
+    private bool WinLine = false;
+    private Score score;
     private int currentCombo = 0;
     private int _comboLimit = 4;
     private int comboCount = 0;
@@ -50,6 +55,8 @@ public class Grid : MonoBehaviour
         _currentActiveSquareColor = squareTextureData.activeSquareTextures[0].squareColor;
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         NewGame();
+        score = gameObject.GetComponent<Score>();
+        
     }
 
     private void OnUpdateSquareColor(Config.SquareColor color)
@@ -86,9 +93,11 @@ public class Grid : MonoBehaviour
         GameEvent.bestScoreReached = false;
         GameEvent.OnCountDown = false;
         GameEvent.isPlaying = false;
-        audioManager.PlaySFX(audioManager.NewGame);
-
-    }
+		audioManager.PlaySFX(audioManager.NewGame);
+        GameEvent.Combo = false;
+        comboCount = 0;
+        currentCombo = 0;
+	}
 
     public void GameOverBoard()
     {
@@ -167,7 +176,6 @@ public class Grid : MonoBehaviour
     }
 
 
-
     private void CheckIfShapeCanBePlaced()
     {
         var squareIndexes = new List<int>();
@@ -195,16 +203,25 @@ public class Grid : MonoBehaviour
 
                 GameEvent.Addscore(singleScore);
             }
-            if (combo)
+            if (GameEvent.Combo)
             {
                 comboCount++;
                 Debug.Log("combo count " + comboCount);
                 if(comboCount == _comboLimit)
                 {
-                    combo = false;
-                    currentCombo = 0;
-                    comboCount = 0;
-                }
+                    if(WinLine)
+                    {
+                        comboCount = 0;
+
+					}
+                    if (!WinLine) 
+                    {
+                        GameEvent.Combo = false;
+                        currentCombo = 0;
+                        comboCount = 0;
+                    }
+
+				}
             }
 
             var shapeleft = 0;
@@ -238,6 +255,7 @@ public class Grid : MonoBehaviour
     public void CheckIfAnyLineCompleted()
     {
         int BP = 0;
+        int comboPoints = 0;
         List<int[]> lines = new List<int[]>();
         //cột
         foreach (var column in _lineIndicator.columnIndexes)
@@ -260,9 +278,66 @@ public class Grid : MonoBehaviour
         
         var completedLines = CheckIfSquareAreCompleted(lines);
         
-        
+        if (completedLines == 0)
+        {
+            WinLine = false;
+        }
+        if (completedLines >= 1)
+        {
+            WinLine = true;
+            currentCombo++;
+            if (currentCombo >= 2)
+                GameEvent.Combo = true;
+            if (currentCombo == 1)
+			audioManager.PlaySFX(audioManager.combo1);
+			if (GameEvent.Combo)
+			{
+				Debug.Log("combo " + currentCombo);
+                comboPoints = 20 * currentCombo;
+                currentScorePoint = comboPoints;
+                
+				comboCount = 0;
+				
+                if (currentCombo >= 2)
+                {
+                    if (currentCombo == 2)
+                        audioManager.PlaySFX(audioManager.combo2);
+                    if (currentCombo == 3)
+                        audioManager.PlaySFX(audioManager.combo3);
+                    if (currentCombo == 4)
+                        audioManager.PlaySFX(audioManager.combo4);
+                    if (currentCombo == 5)
+                        audioManager.PlaySFX(audioManager.combo5);
+                    if (currentCombo == 6)
+                        audioManager.PlaySFX(audioManager.combo6);
+                    if (currentCombo == 7)
+                        audioManager.PlaySFX(audioManager.combo7);
+                    if (currentCombo == 8)
+                        audioManager.PlaySFX(audioManager.combo8);
+                    if (currentCombo == 9)
+                        audioManager.PlaySFX(audioManager.combo9);
+                    if (currentCombo == 10)
+                        audioManager.PlaySFX(audioManager.combo10);
+                    if (currentCombo == 11)
+                        audioManager.PlaySFX(audioManager.combo11);
+                    if (currentCombo == 12)
+                        audioManager.PlaySFX(audioManager.combo12);
+                    if (currentCombo == 13)
+                        audioManager.PlaySFX(audioManager.combo13);
+                    if (currentCombo == 14)
+                        audioManager.PlaySFX(audioManager.combo14);
+                    if (currentCombo >= 15)
+                        audioManager.PlaySFX(audioManager.combo15);
+                    comboEffect.text = "Combo " + currentCombo.ToString();
+                    comboPointTxt.text = "+ " + comboPoints.ToString();
+                    Combo.gameObject.SetActive(true);
+                }  
+			}
+
+        }
 		if (completedLines >= 2)
         {
+            
             GameEvent.ShowEffects();
             BP = 20 * completedLines * 2;
             GameEvent.AddPlus(BP);
@@ -270,7 +345,7 @@ public class Grid : MonoBehaviour
         }
 
         // + điểm
-        var totalScore = 20 * completedLines + BP; // + bonus
+        var totalScore = 20 * completedLines + BP + comboPoints; // + bonus
         GameEvent.Addscore(totalScore);
         CheckIfPlayerLost();
 
@@ -316,45 +391,6 @@ public class Grid : MonoBehaviour
             }
             if (completed)
             {
-                combo = true;
-				if (combo)
-				{
-					currentCombo++;
-					Debug.Log("combo " + currentCombo);
-					if (currentCombo == 1)
-						audioManager.PlaySFX(audioManager.combo1);
-					if (currentCombo == 2)
-						audioManager.PlaySFX(audioManager.combo2);
-					if (currentCombo == 3)
-						audioManager.PlaySFX(audioManager.combo3);
-					if (currentCombo == 4)
-						audioManager.PlaySFX(audioManager.combo4);
-					if (currentCombo == 5)
-						audioManager.PlaySFX(audioManager.combo5);
-					if (currentCombo == 6)
-						audioManager.PlaySFX(audioManager.combo6);
-					if (currentCombo == 7)
-						audioManager.PlaySFX(audioManager.combo7);
-					if (currentCombo == 8)
-						audioManager.PlaySFX(audioManager.combo8);
-					if (currentCombo == 9)
-						audioManager.PlaySFX(audioManager.combo9);
-					if (currentCombo == 10)
-						audioManager.PlaySFX(audioManager.combo10);
-					if (currentCombo == 11)
-						audioManager.PlaySFX(audioManager.combo11);
-					if (currentCombo == 12)
-						audioManager.PlaySFX(audioManager.combo12);
-					if (currentCombo == 13)
-						audioManager.PlaySFX(audioManager.combo13);
-					if (currentCombo == 14)
-						audioManager.PlaySFX(audioManager.combo14);
-					if (currentCombo >= 15)
-						audioManager.PlaySFX(audioManager.combo15);
-                    comboEffect.text = "Combo " + currentCombo.ToString();
-                    comboEffect.gameObject.SetActive(true);
-					comboCount = 0;
-				}
 				linesCompleted++;
             }
         }
@@ -459,6 +495,7 @@ public class Grid : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         GameOverBoard();
+        GameEvent.Combo = false;
     }
 
 }
