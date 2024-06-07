@@ -22,11 +22,13 @@ public class Grid : MonoBehaviour
     public TMP_Text comboEffect;
     public TMP_Text comboPointTxt;
     public int currentScorePoint;
+    public float delay = 0.5f;
 
-    private bool WinLine = false;
+    private int _currentWinLines;
+    //private bool WinLine = false;
     private Score score;
     private int currentCombo = 0;
-    private int _comboLimit = 4;
+    private int _comboLimit = 3;
     private int comboCount = 0;
     AudioManager audioManager;
     private LineIndicator _lineIndicator;
@@ -102,16 +104,21 @@ public class Grid : MonoBehaviour
     public void GameOverBoard()
     {
         squareTextureData.GameOverColor();
-
-        foreach (GameObject square in _gridSquares)
-        {
-            if (square.GetComponent<GridSquare>().Selected == false)
-            {
-                square.GetComponent<GridSquare>().ActivateSquare();
-            }
-
-        }
+        StartCoroutine(GameOverSquare());   
     }
+
+    IEnumerator GameOverSquare()
+    {
+		foreach (GameObject square in _gridSquares)
+		{
+			if (square.GetComponent<GridSquare>().Selected == false)
+			{
+				square.GetComponent<GridSquare>().ActivateSquare();
+			}
+            yield return new WaitForSeconds(delay);
+		}
+        
+	}
     private void SpawnGridSquare()
     {
         //0, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -178,7 +185,8 @@ public class Grid : MonoBehaviour
 
     private void CheckIfShapeCanBePlaced()
     {
-        var squareIndexes = new List<int>();
+		
+		var squareIndexes = new List<int>();
         foreach (var square in _gridSquares)
         {
             var gridSquare = square.GetComponent<GridSquare>();
@@ -203,26 +211,21 @@ public class Grid : MonoBehaviour
 
                 GameEvent.Addscore(singleScore);
             }
-            if (GameEvent.Combo)
-            {
+
+            
+            /*if (GameEvent.Combo)
+            { 
                 comboCount++;
                 Debug.Log("combo count " + comboCount);
                 if(comboCount == _comboLimit)
-                {
-                    if(WinLine)
-                    {
-                        comboCount = 0;
-
-					}
-                    if (!WinLine) 
-                    {
+                { 
                         GameEvent.Combo = false;
                         currentCombo = 0;
                         comboCount = 0;
-                    }
+                }
 
-				}
-            }
+			}*/
+            
 
             var shapeleft = 0;
             foreach (var shape in shapeStorage.shapeList)
@@ -252,6 +255,11 @@ public class Grid : MonoBehaviour
         }
     }
 
+    public bool CheckIfWinLines()
+    {
+        return _currentWinLines >= 1;
+
+    }
     public void CheckIfAnyLineCompleted()
     {
         int BP = 0;
@@ -277,19 +285,37 @@ public class Grid : MonoBehaviour
         }
         
         var completedLines = CheckIfSquareAreCompleted(lines);
-        
-        if (completedLines == 0)
+        //_currentWinLines = completedLines;
+        if (completedLines <= 0)
         {
-            WinLine = false;
-        }
+			if (GameEvent.Combo)
+			{
+				comboCount++;
+				Debug.Log("combo count " + comboCount);
+				if (comboCount == _comboLimit)
+				{
+					GameEvent.Combo = false;
+					currentCombo = 0;
+					comboCount = 0;
+				}
+
+			}
+		}
         if (completedLines >= 1)
         {
-            WinLine = true;
+            //WinLine = true;
             currentCombo++;
+            comboCount = 0;
+
+
             if (currentCombo >= 2)
                 GameEvent.Combo = true;
+
+
             if (currentCombo == 1)
 			audioManager.PlaySFX(audioManager.combo1);
+
+
 			if (GameEvent.Combo)
 			{
 				Debug.Log("combo " + currentCombo);
