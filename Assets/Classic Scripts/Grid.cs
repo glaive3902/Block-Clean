@@ -198,36 +198,24 @@ public class Grid : MonoBehaviour
             }
         }
 
-        int singleScore = 1;
+        
         var currentSelectedShape = shapeStorage.GetCurrentSelectedShape();
         if (currentSelectedShape == null) return;
 
         if (currentSelectedShape.totalSquareNumber == squareIndexes.Count)
         {
-            foreach (var squareIndex in squareIndexes)
+			int singleScore = 0;
+            
+			foreach (var squareIndex in squareIndexes)
             {
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard(_currentActiveSquareColor);
-
-
-                GameEvent.Addscore(singleScore);
+                singleScore++;
+                Debug.Log("khoi da duoc dat");
             }
+            int shapeScore = singleScore;
+			
 
-            
-            /*if (GameEvent.Combo)
-            { 
-                comboCount++;
-                Debug.Log("combo count " + comboCount);
-                if(comboCount == _comboLimit)
-                { 
-                        GameEvent.Combo = false;
-                        currentCombo = 0;
-                        comboCount = 0;
-                }
-
-			}*/
-            
-
-            var shapeleft = 0;
+			var shapeleft = 0;
             foreach (var shape in shapeStorage.shapeList)
             {
                 if (shape.IsOnStartPos() && shape.isAnyOfShapeSquareActive())
@@ -244,7 +232,8 @@ public class Grid : MonoBehaviour
             {
                 GameEvent.SetShapeInactive();
             }
-            CheckIfAnyLineCompleted();
+            
+            CheckIfAnyLineCompleted(shapeScore);
         }
         else
         {
@@ -260,11 +249,12 @@ public class Grid : MonoBehaviour
         return _currentWinLines >= 1;
 
     }
-    public void CheckIfAnyLineCompleted()
+    public void CheckIfAnyLineCompleted(int shapeScore)
     {
         int BP = 0;
         int comboPoints = 0;
-        List<int[]> lines = new List<int[]>();
+		
+		List<int[]> lines = new List<int[]>();
         //cột
         foreach (var column in _lineIndicator.columnIndexes)
         {
@@ -285,7 +275,7 @@ public class Grid : MonoBehaviour
         }
         
         var completedLines = CheckIfSquareAreCompleted(lines);
-        //_currentWinLines = completedLines;
+        
         if (completedLines <= 0)
         {
 			if (GameEvent.Combo)
@@ -371,7 +361,7 @@ public class Grid : MonoBehaviour
         }
 
         // + điểm
-        var totalScore = 20 * completedLines + BP + comboPoints; // + bonus
+        var totalScore = 20 * completedLines + BP + comboPoints +shapeScore; // + bonus
         GameEvent.Addscore(totalScore);
         CheckIfPlayerLost();
 

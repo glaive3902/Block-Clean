@@ -10,12 +10,14 @@ public class Score : MonoBehaviour
     public TMP_Text scoreText;
     public Image ComboEffect;
     public static int currentScore;
+
     private int _bestScore = 0;
+    private Coroutine _ScoreCoroutine;
     void Start()
     {
         currentScore = 0;
         _bestScore = PlayerPrefs.GetInt("bestScore");
-        
+        UpdateScoreText();
     }
 
 	private void OnEnable()
@@ -41,17 +43,40 @@ public class Score : MonoBehaviour
     }
 	private void Addscore(int score)
     {
-        currentScore += score;
+        Debug.Log("them "+score+" diem");
+        int targetscore = currentScore + score;
+		if (_ScoreCoroutine != null)
+		{
+			StopCoroutine(_ScoreCoroutine);
+		}
+
+		_ScoreCoroutine = StartCoroutine(AnimateScore(currentScore, targetscore));
+
 
         UpdateScoreText();
-        if (currentScore >= _bestScore)
+        if (targetscore >= _bestScore)
         {
             GameEvent.bestScoreReached = true;
-            _bestScore = currentScore;
+            _bestScore = targetscore;
             PlayerPrefs.SetInt("bestScore", _bestScore);
         }
     }
+    private IEnumerator AnimateScore(int startScore, int endScore)
+    {
+        float duration = 0.5f; // thoi gian chay hieu ung diem so
+	    float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
 
+			
+	        elapsed += Time.deltaTime;
+            currentScore = (int)Mathf.Lerp(startScore, endScore, elapsed/duration);
+            UpdateScoreText();
+            yield return null;
+        }
+        currentScore = endScore;
+        UpdateScoreText();
+    }
     private void UpdateScoreText()
     {
         scoreText.text = currentScore.ToString();

@@ -182,20 +182,29 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 	}
     public void OnPointerDown(PointerEventData eventData)
     {
-        _selectedShape = this;
+        if(_selectedShape == null)
+        {
+            _selectedShape = this;
+        }
+        if (_selectedShape == this) 
+        {
+            disableShadow();
+		    GetComponent<RectTransform>().localScale = shapeSelectedScale;
+		    Vector2 pos;
+		    RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
+		    _TargetPosition = pos + offset;
+            GameEvent.isPlaying = true;
+        }
+
+
         
-        disableShadow();
-		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
-		Vector2 pos;
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
-		_TargetPosition = pos + offset;
-        GameEvent.isPlaying = true;
 	}
 	public void OnPointerUp(PointerEventData eventData)
     {
 		//MoveShapeToStartPosition();
-		this.GetComponent<RectTransform>().localScale = _shapeStartScale;
+		_selectedShape.GetComponent<RectTransform>().localScale = _shapeStartScale;
 		GameEvent.CheckIfShapeCanbePlaced();
+		_selectedShape = null;
 		//GameEvent.isPlaying = false;
 	}
 	public void OnBeginDrag(PointerEventData eventData)
@@ -204,18 +213,26 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     }
 	public void OnDrag(PointerEventData eventData)
     {
-        
-        _selectedShape = this;
-        disableShadow();
-		this.GetComponent<RectTransform>().localScale = shapeSelectedScale;
-		_transform.anchorMin = new Vector3(0, 0, 0);
-		_transform.anchorMax = new Vector3(0, 0, 0);
-		_transform.pivot = new Vector3(0, 0,0);
 
-		Vector2 pos;
-		RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
-		_TargetPosition = pos + offset;
-        GameEvent.isPlaying = true;
+		if (_selectedShape == null)
+		{
+			_selectedShape = this;
+		}
+        if (_selectedShape == this)
+        {
+            disableShadow();
+		    GetComponent<RectTransform>().localScale = shapeSelectedScale;
+		    _transform.anchorMin = new Vector3(0, 0, 0);
+		    _transform.anchorMax = new Vector3(0, 0, 0);
+		    _transform.pivot = new Vector3(0, 0,0);
+            Vector2 pos;
+		    RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform, eventData.position, Camera.main, out pos);
+		    _TargetPosition = pos + offset;
+             GameEvent.isPlaying = true;
+        }
+		
+
+		
 	}
 	public void OnEndDrag(PointerEventData eventData)
     {
@@ -231,6 +248,7 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
     {
         _transform.transform.localPosition = _StartPos;
         GameEvent.isPlaying = false;
+        //_selectedShape = null;
 	}
 
     private void disableShadow()
