@@ -210,7 +210,7 @@ public class Grid : MonoBehaviour
             {
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnTheBoard(_currentActiveSquareColor);
                 singleScore++;
-                Debug.Log("khoi da duoc dat");
+                
             }
             int shapeScore = singleScore;
 			

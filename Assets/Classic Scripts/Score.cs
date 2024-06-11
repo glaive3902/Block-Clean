@@ -53,7 +53,7 @@ public class Score : MonoBehaviour
 		_ScoreCoroutine = StartCoroutine(AnimateScore(currentScore, targetscore));
 
 
-        UpdateScoreText();
+        //UpdateScoreText();
         if (targetscore >= _bestScore)
         {
             GameEvent.bestScoreReached = true;

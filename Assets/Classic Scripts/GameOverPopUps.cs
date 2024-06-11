@@ -11,8 +11,9 @@ public class GameOverPopUps : MonoBehaviour
 	public GameObject Lose;
 
 	AudioManager audioManager;
-	public List<TMP_Text> bestScore;
+	public TMP_Text bestScore;
 	public TMP_Text FinalScore;
+	public TMP_Text GameOverBestScore;
 
 	private int _finalScore;
 	private int _bestscore;
@@ -23,8 +24,8 @@ public class GameOverPopUps : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		UpdateBS();
 		UpdateSC();
+		ShowCurrentBS();
 	}
 	private void OnDisable()
 	{
@@ -43,10 +44,13 @@ public class GameOverPopUps : MonoBehaviour
 
 	public void UpdateBS()
 	{
-		foreach (var text in bestScore)
-		{_bestscore = PlayerPrefs.GetInt("bestScore");
-			text.text = _bestscore.ToString();
-		}
+		int currentBestScore = PlayerPrefs.GetInt("bestScore");
+		StartCoroutine(AnimateScore(currentBestScore));
+	}
+	public void ShowCurrentBS()
+	{
+		_bestscore = PlayerPrefs.GetInt("bestScore");
+		GameOverBestScore.text = _bestscore.ToString();
 	}
 
 	public void UpdateSC()
@@ -62,6 +66,7 @@ public class GameOverPopUps : MonoBehaviour
 			Win.SetActive(true);
 			audioManager.PlaySFX(audioManager.win);
 			Lose.SetActive(false);
+			UpdateBS();
 		}
 		else
 		{
@@ -78,4 +83,21 @@ public class GameOverPopUps : MonoBehaviour
 		WinOrLose();
 		NoMoreSpace.gameObject.SetActive(false);
 	}
+
+	private IEnumerator AnimateScore(int BestScore)
+	{
+		
+		float duration = 3f; // thoi gian chay hieu ung diem so
+		float elapsed = 0.0f;
+		while (elapsed < duration)
+		{
+			elapsed += Time.deltaTime;
+			_bestscore = (int)Mathf.Lerp(0, BestScore, elapsed / duration);
+			bestScore.text = _bestscore.ToString();
+			yield return null;
+		}
+		_bestscore = BestScore;
+		bestScore.text = _bestscore.ToString();
+	}
+
 }
