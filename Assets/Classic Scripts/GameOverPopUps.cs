@@ -15,6 +15,7 @@ public class GameOverPopUps : MonoBehaviour
 	public TMP_Text FinalScore;
 	public TMP_Text GameOverBestScore;
 
+	public Interstitial interstitial;
 	private int _finalScore;
 	private int _bestscore;
     void Start()
@@ -70,9 +71,12 @@ public class GameOverPopUps : MonoBehaviour
 		}
 		else
 		{
+			interstitial.LoadInterstitialAd();
+			interstitial.ShowInterstitialAd();
 			Win.SetActive(false);
-			audioManager.PlaySFX(audioManager.lose);
+			
 			Lose.SetActive(true);
+			//audioManager.PlaySFX(audioManager.lose);
 		}
 	}
 

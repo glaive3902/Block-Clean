@@ -44,7 +44,7 @@ public class GridSquare : MonoBehaviour
         
         _currentSquareColor = color;
         ActivateSquare();
-        audioManager.PlaySFX(audioManager.putDown);
+        //audioManager.PlaySFX(audioManager.putDown);
     }
     public void ActivateSquare()
     {

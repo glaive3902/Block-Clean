@@ -213,7 +213,7 @@ public class Grid : MonoBehaviour
                 
             }
             int shapeScore = singleScore;
-			
+			audioManager.PlaySFX(audioManager.putDown);
 
 			var shapeleft = 0;
             foreach (var shape in shapeStorage.shapeList)
