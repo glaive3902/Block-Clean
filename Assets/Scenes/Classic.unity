@@ -5573,7 +5573,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 462756331}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 5
@@ -8092,6 +8092,8 @@ MonoBehaviour:
   comboPointTxt: {fileID: 543206154}
   currentScorePoint: 0
   delay: 0.02
+  reviveTime: 1
+  rewardads: {fileID: 1761312436}
 --- !u!114 &1609542269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8759,6 +8761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19c87d3b38d4ad4f9c840ce66a9ebe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 1609542268}
 --- !u!4 &1761312437
 Transform:
   m_ObjectHideFlags: 0

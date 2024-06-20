@@ -7,6 +7,8 @@ using System;
 
 public class rewardADS : MonoBehaviour
 {
+	public Grid grid;
+
 	public void Start()
 	{
 		// Initialize the Google Mobile Ads SDK.
@@ -15,7 +17,6 @@ public class rewardADS : MonoBehaviour
 			// This callback is called once the MobileAds SDK is initialized.
 		});
 		LoadRewardedAd();
-		ShowRewardedAd();
 	}
 #if UNITY_ANDROID
 	private string _adUnitId = "ca-app-pub-3940256099942544/5224354917";
@@ -27,6 +28,11 @@ public class rewardADS : MonoBehaviour
 
 	private RewardedAd _rewardedAd;
 
+	public void playAD()
+	{
+		LoadRewardedAd();
+		ShowRewardedAd();
+	}
 	/// <summary>
 	/// Loads the rewarded ad.
 	/// </summary>
@@ -64,7 +70,7 @@ public class rewardADS : MonoBehaviour
 	}
 	public void ShowRewardedAd()
 	{
-		const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
+		//const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
 
 		if (_rewardedAd != null && _rewardedAd.CanShowAd())
 		{
@@ -73,6 +79,8 @@ public class rewardADS : MonoBehaviour
 				// TODO: Reward the user.
 				//Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
 				Debug.Log("Rewarded");
+				grid.ReviveGame();
+				grid.reviveTime--;
 			});
 		}
 	}

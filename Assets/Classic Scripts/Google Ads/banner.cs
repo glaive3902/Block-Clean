@@ -13,8 +13,11 @@ public class banner : MonoBehaviour
 		MobileAds.Initialize((InitializationStatus initStatus) =>
 		{
 			// This callback is called once the MobileAds SDK is initialized.
-			loadAd();
+
 		});
+			
+		loadAd();
+		CreateBannerView();
 	}
 #if UNITY_ANDROID
 	private string _adUnitId = "ca-app-pub-3940256099942544/6300978111";

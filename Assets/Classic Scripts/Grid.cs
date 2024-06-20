@@ -23,8 +23,10 @@ public class Grid : MonoBehaviour
     public TMP_Text comboPointTxt;
     public int currentScorePoint;
     public float delay = 0.5f;
+    public int reviveTime = 1;
+    public rewardADS rewardads;
 
-    private int _currentWinLines;
+	private int _currentWinLines;
     //private bool WinLine = false;
     private Score score;
     private int currentCombo = 0;
@@ -34,6 +36,7 @@ public class Grid : MonoBehaviour
     private LineIndicator _lineIndicator;
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
     private List<GameObject> _gridSquares = new List<GameObject>();
+    private List<int> SquareIndex = new List<int>();
     private Config.SquareColor _currentActiveSquareColor = Config.SquareColor.NotSet;
 
     private void OnEnable()
@@ -135,9 +138,24 @@ public class Grid : MonoBehaviour
                 _gridSquares[_gridSquares.Count - 1].transform.SetParent(this.transform);
                 _gridSquares[_gridSquares.Count - 1].transform.localScale = new Vector3(squareScale, squareScale, squareScale);
                 _gridSquares[_gridSquares.Count - 1].GetComponent<GridSquare>().SetImage(square_index % 2 == 0);
+                if(square_index > 15 && square_index < 48)
+                {
+                    SquareIndex.Add(square_index);
+                }
+                
                 square_index++;
             }
         }
+    }
+    public void ReviveGame()
+    {
+        foreach (var index in SquareIndex)
+        {
+            var gridSquare = _gridSquares[index].GetComponent<GridSquare>();
+            gridSquare.Deactivate();
+            gridSquare.ClearOccupied();
+        }
+        CheckIfPlayerLost();
     }
 
     private void SetGridSquarePosition()
@@ -278,8 +296,8 @@ public class Grid : MonoBehaviour
         
         if (completedLines <= 0)
         {
-			if (GameEvent.Combo)
-			{
+			//if (GameEvent.Combo)
+			//{
 				comboCount++;
 				Debug.Log("combo count " + comboCount);
 				if (comboCount == _comboLimit)
@@ -289,7 +307,7 @@ public class Grid : MonoBehaviour
 					comboCount = 0;
 				}
 
-			}
+			//}
 		}
         if (completedLines >= 1)
         {
@@ -429,9 +447,15 @@ public class Grid : MonoBehaviour
 
         if (validShapes == 0)
         {
-            GameEvent.GameOver();
-            StartCoroutine(GameOver());
-
+            if (reviveTime > 0)
+            {
+                rewardads.playAD();
+            }
+            else
+            {
+                GameEvent.GameOver();
+                StartCoroutine(GameOver());
+            }
         }
         Debug.Log(validShapes);
     }
@@ -512,6 +536,7 @@ public class Grid : MonoBehaviour
         yield return new WaitForSeconds(1);
         GameOverBoard();
         GameEvent.Combo = false;
+        reviveTime = 1;
     }
 
 }
