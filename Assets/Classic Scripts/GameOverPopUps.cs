@@ -9,6 +9,7 @@ public class GameOverPopUps : MonoBehaviour
 	public Image NoMoreSpace;
 	public GameObject Win;
 	public GameObject Lose;
+	public Timer _timer;
 
 	AudioManager audioManager;
 	public TMP_Text bestScore;
@@ -21,6 +22,7 @@ public class GameOverPopUps : MonoBehaviour
     void Start()
     {
 		audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+		
 	}
 
 	private void FixedUpdate()
@@ -71,7 +73,6 @@ public class GameOverPopUps : MonoBehaviour
 		}
 		else
 		{
-			interstitial.LoadInterstitialAd();
 			interstitial.ShowInterstitialAd();
 			Win.SetActive(false);
 			
@@ -82,10 +83,12 @@ public class GameOverPopUps : MonoBehaviour
 
 	private IEnumerator EndGame()
 	{
-		NoMoreSpace.gameObject.SetActive(true);
+		
 		yield return new WaitForSeconds(4);
 		WinOrLose();
+		_timer.resetRevive();
 		NoMoreSpace.gameObject.SetActive(false);
+		
 	}
 
 	private IEnumerator AnimateScore(int BestScore)

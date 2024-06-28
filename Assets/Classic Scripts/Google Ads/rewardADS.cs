@@ -8,31 +8,31 @@ using System;
 public class rewardADS : MonoBehaviour
 {
 	public Grid grid;
-
+	private RewardedAd _rewardedAd;
 	public void Start()
 	{
 		// Initialize the Google Mobile Ads SDK.
 		MobileAds.Initialize((InitializationStatus initStatus) =>
 		{
 			// This callback is called once the MobileAds SDK is initialized.
+			LoadRewardedAd();
+			
+			
 		});
-		LoadRewardedAd();
+		
+		
 	}
 #if UNITY_ANDROID
 	private string _adUnitId = "ca-app-pub-3940256099942544/5224354917";
 #elif UNITY_IPHONE
-  private string _adUnitId = "ca-app-pub-3940256099942544/1712485313";
+	private string _adUnitId = "ca-app-pub-3940256099942544/1712485313";
 #else
-  private string _adUnitId = "unused";
+	private string _adUnitId = "unused";
 #endif
 
-	private RewardedAd _rewardedAd;
+	
 
-	public void playAD()
-	{
-		LoadRewardedAd();
-		ShowRewardedAd();
-	}
+	
 	/// <summary>
 	/// Loads the rewarded ad.
 	/// </summary>
@@ -66,6 +66,7 @@ public class rewardADS : MonoBehaviour
 						  + ad.GetResponseInfo());
 
 				_rewardedAd = ad;
+				RegisterEventHandlers(_rewardedAd);
 			});
 	}
 	public void ShowRewardedAd()
@@ -112,12 +113,14 @@ public class rewardADS : MonoBehaviour
 		ad.OnAdFullScreenContentClosed += () =>
 		{
 			Debug.Log("Rewarded ad full screen content closed.");
+			LoadRewardedAd();
 		};
 		// Raised when the ad failed to open full screen content.
 		ad.OnAdFullScreenContentFailed += (AdError error) =>
 		{
 			Debug.LogError("Rewarded ad failed to open full screen content " +
 						   "with error : " + error);
+			LoadRewardedAd();
 		};
 	}
 }

@@ -15,9 +15,10 @@ public class Interstitial : MonoBehaviour
 		MobileAds.Initialize((InitializationStatus initStatus) =>
 		{
 			// This callback is called once the MobileAds SDK is initialized.
+			LoadInterstitialAd();
 			
 		});
-	LoadInterstitialAd();
+	
 		//ShowInterstitialAd();
 		
 	}
@@ -64,6 +65,7 @@ public class Interstitial : MonoBehaviour
 						  + ad.GetResponseInfo());
 
 				_interstitialAd = ad;
+				RegisterEventHandlers(_interstitialAd);
 			});
 	}
 	public void ShowInterstitialAd()
@@ -106,12 +108,14 @@ public class Interstitial : MonoBehaviour
 		interstitialAd.OnAdFullScreenContentClosed += () =>
 		{
 			Debug.Log("Interstitial ad full screen content closed.");
+			LoadInterstitialAd();
 		};
 		// Raised when the ad failed to open full screen content.
 		interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>
 		{
 			Debug.LogError("Interstitial ad failed to open full screen content " +
 						   "with error : " + error);
+			LoadInterstitialAd();
 		};
 	}
 	

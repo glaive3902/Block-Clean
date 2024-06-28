@@ -24,7 +24,9 @@ public class Grid : MonoBehaviour
     public int currentScorePoint;
     public float delay = 0.5f;
     public int reviveTime = 1;
-    public rewardADS rewardads;
+    //public rewardADS rewardads;
+    public Slider LoseCountDown;
+    public GameObject nomospace;
 
 	private int _currentWinLines;
     //private bool WinLine = false;
@@ -449,7 +451,8 @@ public class Grid : MonoBehaviour
         {
             if (reviveTime > 0)
             {
-                rewardads.playAD();
+                LoseCountDown.gameObject.SetActive(true);
+                //rewardads.playAD();
             }
             else
             {
@@ -531,12 +534,14 @@ public class Grid : MonoBehaviour
         return squareList;
     }
 
-    private IEnumerator GameOver()
+    public IEnumerator GameOver()
     {
+        nomospace.gameObject.SetActive(true);
         yield return new WaitForSeconds(1);
         GameOverBoard();
         GameEvent.Combo = false;
         reviveTime = 1;
+        
     }
 
 }

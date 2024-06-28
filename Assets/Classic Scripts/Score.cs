@@ -43,7 +43,7 @@ public class Score : MonoBehaviour
     }
 	private void Addscore(int score)
     {
-        Debug.Log("them "+score+" diem");
+        //Debug.Log("them "+score+" diem");
         int targetscore = currentScore + score;
 		if (_ScoreCoroutine != null)
 		{

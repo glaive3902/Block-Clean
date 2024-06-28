@@ -6,27 +6,30 @@ public class Timer : MonoBehaviour
 {
 	public GameObject Win;
 	public GameObject Lose;
-	public GameObject EndGameButton;
-    public float currentTime;
+	public Slider ReviveSlider;
+	public Grid grid;
+	//public rewardADS rewardads;
+	public float currentTime;
 	public float OriginalCountdown = 5;
-	//AudioManager audioManager;
 
 	private void Start()
 	{
-		//audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+		currentTime = OriginalCountdown;
+		ReviveSlider.maxValue = OriginalCountdown;
 	}
+	//AudioManager audioManager;
 
 	private void Update()
 	{
-		if (GameEvent.OnCountDown)
+		Countdown();
+		ReviveSlider.value = currentTime;
+		if(ReviveSlider.value == 0)
 		{
-			Countdown();
+			GameEvent.GameOver();
+			grid.StartCoroutine(grid.GameOver());
+			ReviveSlider.gameObject.SetActive(false);
+			
 		}
-		else if(!GameEvent.OnCountDown)
-		{
-			StartCoroutine(CountdownRoute());
-		}
-		
 	}
 
 	public void Countdown()
@@ -40,15 +43,12 @@ public class Timer : MonoBehaviour
 		else
 		{
 			currentTime = 0;
-			WinOrLose();
-			EndGameButton.SetActive(true);
-			
 		}
 		
 	}
 	IEnumerator CountdownRoute()
 	{
-		EndGameButton.SetActive(false);
+		ReviveSlider.gameObject.SetActive(true);
 		currentTime = OriginalCountdown;
 		yield return new WaitForSeconds(1);
 		GameEvent.OnCountDown = true;
@@ -66,5 +66,10 @@ public class Timer : MonoBehaviour
 			Win.SetActive(false);
 			Lose.SetActive(true);
 		}
+		
+	}
+	public void resetRevive()
+	{
+		currentTime = OriginalCountdown;
 	}
 }
