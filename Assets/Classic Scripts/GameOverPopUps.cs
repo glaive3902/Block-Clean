@@ -9,7 +9,6 @@ public class GameOverPopUps : MonoBehaviour
 	public Image NoMoreSpace;
 	public GameObject Win;
 	public GameObject Lose;
-	public Timer _timer;
 
 	AudioManager audioManager;
 	public TMP_Text bestScore;
@@ -42,6 +41,7 @@ public class GameOverPopUps : MonoBehaviour
 
 	public void OnGameOver()
 	{
+		
 		StartCoroutine(EndGame());
 	}
 
@@ -64,6 +64,7 @@ public class GameOverPopUps : MonoBehaviour
 
 	public void WinOrLose()
 	{
+		
 		if (GameEvent.bestScoreReached)
 		{
 			Win.SetActive(true);
@@ -75,7 +76,6 @@ public class GameOverPopUps : MonoBehaviour
 		{
 			interstitial.ShowInterstitialAd();
 			Win.SetActive(false);
-			
 			Lose.SetActive(true);
 			//audioManager.PlaySFX(audioManager.lose);
 		}
@@ -86,7 +86,6 @@ public class GameOverPopUps : MonoBehaviour
 		
 		yield return new WaitForSeconds(4);
 		WinOrLose();
-		_timer.resetRevive();
 		NoMoreSpace.gameObject.SetActive(false);
 		
 	}

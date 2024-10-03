@@ -109,6 +109,7 @@ public class Interstitial : MonoBehaviour
 		{
 			Debug.Log("Interstitial ad full screen content closed.");
 			LoadInterstitialAd();
+
 		};
 		// Raised when the ad failed to open full screen content.
 		interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>

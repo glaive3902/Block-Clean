@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using Unity.Burst.Intrinsics;
+using GoogleMobileAds.Api;
 
 public class Grid : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class Grid : MonoBehaviour
     //public rewardADS rewardads;
     public Slider LoseCountDown;
     public GameObject nomospace;
+    public GameObject reviveVFX;
+    public Timer timer;
+    
 
 	private int _currentWinLines;
     //private bool WinLine = false;
@@ -38,8 +42,9 @@ public class Grid : MonoBehaviour
     private LineIndicator _lineIndicator;
     private Vector2 _offset = new Vector2(0.0f, 0.0f);
     private List<GameObject> _gridSquares = new List<GameObject>();
-    private List<int> SquareIndex = new List<int>();
-    private Config.SquareColor _currentActiveSquareColor = Config.SquareColor.NotSet;
+    private List<int> ReviveSquareIndex = new List<int>();
+	private List<int> AllSquareIndex = new List<int>();
+	private Config.SquareColor _currentActiveSquareColor = Config.SquareColor.NotSet;
 
     private void OnEnable()
     {
@@ -93,17 +98,20 @@ public class Grid : MonoBehaviour
         _gridSquares.Clear();
         GameEvent.NewGame = true;
         CreateGrid();
+		timer.resetRevive();
 
-        //squareTextureData.RandomColor();
-        GameEvent.RequestNewShapes();
+		//squareTextureData.RandomColor();
+		GameEvent.RequestNewShapes();
         GameEvent.NewGame = false;
         GameEvent.bestScoreReached = false;
         GameEvent.OnCountDown = false;
         GameEvent.isPlaying = false;
 		audioManager.PlaySFX(audioManager.NewGame);
         GameEvent.Combo = false;
+        
         comboCount = 0;
         currentCombo = 0;
+        reviveTime = 1;
 	}
 
     public void GameOverBoard()
@@ -114,15 +122,18 @@ public class Grid : MonoBehaviour
 
     IEnumerator GameOverSquare()
     {
-		foreach (GameObject square in _gridSquares)
+		for (int i = AllSquareIndex.Count; i >= 0; i -= 8)
 		{
-			if (square.GetComponent<GridSquare>().Selected == false)
+			for (int j = 8; j >= 0; j--)
 			{
-				square.GetComponent<GridSquare>().ActivateSquare();
+				if (i + j < AllSquareIndex.Count && _gridSquares[AllSquareIndex[i + j]].GetComponent<GridSquare>().Selected == false)
+				{
+					_gridSquares[AllSquareIndex[i + j]].GetComponent<GridSquare>().ActivateSquare();
+				}
 			}
-            yield return new WaitForSeconds(delay);
+			yield return new WaitForSeconds(delay); // Thời gian chờ giữa các nhóm 8 ô, bạn có thể điều chỉnh giá trị này
 		}
-        
+
 	}
     private void SpawnGridSquare()
     {
@@ -139,10 +150,10 @@ public class Grid : MonoBehaviour
                 _gridSquares[_gridSquares.Count - 1].GetComponent<GridSquare>().SquareIndex = square_index;
                 _gridSquares[_gridSquares.Count - 1].transform.SetParent(this.transform);
                 _gridSquares[_gridSquares.Count - 1].transform.localScale = new Vector3(squareScale, squareScale, squareScale);
-                _gridSquares[_gridSquares.Count - 1].GetComponent<GridSquare>().SetImage(square_index % 2 == 0);
+                AllSquareIndex.Add(square_index);
                 if(square_index > 15 && square_index < 48)
                 {
-                    SquareIndex.Add(square_index);
+                    ReviveSquareIndex.Add(square_index);
                 }
                 
                 square_index++;
@@ -151,13 +162,16 @@ public class Grid : MonoBehaviour
     }
     public void ReviveGame()
     {
-        foreach (var index in SquareIndex)
+        foreach (var index in ReviveSquareIndex)
         {
             var gridSquare = _gridSquares[index].GetComponent<GridSquare>();
             gridSquare.Deactivate();
             gridSquare.ClearOccupied();
         }
+        audioManager.PlaySFX(audioManager.Revive);
         CheckIfPlayerLost();
+        //reviveVFX.gameObject.SetActive(true);
+        reviveTime--;
     }
 
     private void SetGridSquarePosition()

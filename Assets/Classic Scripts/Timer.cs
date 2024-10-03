@@ -8,19 +8,23 @@ public class Timer : MonoBehaviour
 	public GameObject Lose;
 	public Slider ReviveSlider;
 	public Grid grid;
+
 	//public rewardADS rewardads;
 	public float currentTime;
 	public float OriginalCountdown = 5;
+	private Animator _animate;
 
 	private void Start()
 	{
 		currentTime = OriginalCountdown;
 		ReviveSlider.maxValue = OriginalCountdown;
+		_animate = GetComponent<Animator>();
 	}
 	//AudioManager audioManager;
 
 	private void Update()
 	{
+		
 		Countdown();
 		ReviveSlider.value = currentTime;
 		if(ReviveSlider.value == 0)
@@ -28,7 +32,6 @@ public class Timer : MonoBehaviour
 			GameEvent.GameOver();
 			grid.StartCoroutine(grid.GameOver());
 			ReviveSlider.gameObject.SetActive(false);
-			
 		}
 	}
 
@@ -39,6 +42,7 @@ public class Timer : MonoBehaviour
 		{
 			
 			currentTime -= Time.deltaTime;
+			
 		}
 		else
 		{
@@ -71,5 +75,10 @@ public class Timer : MonoBehaviour
 	public void resetRevive()
 	{
 		currentTime = OriginalCountdown;
+	}
+
+	public void Disable()
+	{
+		gameObject.SetActive(false);
 	}
 }

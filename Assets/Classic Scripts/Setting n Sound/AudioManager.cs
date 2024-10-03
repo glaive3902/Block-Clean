@@ -34,6 +34,7 @@ public class AudioManager : MonoBehaviour
 	public AudioClip pickUp2;
 	public AudioClip tripleLines;
 	public AudioClip putDown;
+	public AudioClip Revive;
 
 
 	public GameObject SFXOn;

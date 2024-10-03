@@ -13,9 +13,10 @@ public class banner : MonoBehaviour
 		MobileAds.Initialize((InitializationStatus initStatus) =>
 		{
 			// This callback is called once the MobileAds SDK is initialized.
-		
+			
 
 		});
+		
 		CreateBannerView();
 		loadAd();
 		

@@ -81,7 +81,6 @@ public class rewardADS : MonoBehaviour
 				//Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
 				Debug.Log("Rewarded");
 				grid.ReviveGame();
-				grid.reviveTime--;
 			});
 		}
 	}
